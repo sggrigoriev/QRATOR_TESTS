@@ -11,8 +11,16 @@ ssize_t local_min(const int* array, size_t size) {
     bool down = true;
     ssize_t i = 0;
     do {
-        if((array[i] < array[i+1]) && down) return i;
-        down = (array[i] > array[i+1]);
+        int a = array[i];           //This is optimizer work not to read the same variable twice,
+        int b = array[i+1];         //so please take it as reassurance
+        if((a < b) && down) return i;
+        down = (a > b);
     } while (++i < (size-1));
     return (down)?size-1:-1;
 }
+
+
+
+
+
+
