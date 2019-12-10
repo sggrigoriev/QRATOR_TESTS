@@ -21,6 +21,7 @@ private:
     int events_counter[SYN_SIZE];
     pthread_cond_t signal;
     pthread_mutex_t s_mutex;
+    pthread_mutex_t ec_mutex; //for events counter TODO events_counter to Locked
 
     sync_event_t getEvent();
 

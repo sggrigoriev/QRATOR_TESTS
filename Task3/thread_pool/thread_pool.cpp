@@ -29,5 +29,6 @@ bool ThreadPool::Enqueue(Task& t, Task::priority_t p) throw(TP_exception) {
 void ThreadPool::Stop() {
     all_stops = true;
     syn.Notify(Sync::SYN_TOTAL_STOP);
+    ts.stop();
     wrk.cleanClearing(Workers::CLEAN_ALL);
 }
