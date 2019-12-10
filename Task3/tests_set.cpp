@@ -23,11 +23,14 @@ private:
 
 class SlowAnswer: public Task {
 public:
-    explicit SlowAnswer(time_t sec_interval) { delay = sec_interval; }
-    virtual void _do() { sleep(delay); std::cout << "SlowAnswer after " << delay << " seconds\n";}
+    SlowAnswer(time_t sec_interval, const std::string& str): delay(sec_interval), s(str) {}
+    virtual void _do() {
+        sleep(delay);
+        std::cout << "\n" << s << "\n";
+    }
 private:
     time_t delay;
-
+    std::string s;
 };
 
 
@@ -47,71 +50,144 @@ void Test1_0() { // "Task test: calc smth inside, get result", 10
     }
 }
 void Test2_0() { //"Tthe task can't start if no available workers
-    std::string str = std::string(__FUNCTION__) + std::string(": the task can't start if no available workers");
+    std::cout << std::string(__FUNCTION__) + std::string(": the task can't start if no available workers\n");
 
-    SlowAnswer sa(3);
-    SlowAnswer qa(1);
+    SlowAnswer sa(3, "Task1 run!");
+    SlowAnswer qa(1, "Task2 run!");
 
     ThreadPool tp(1);
+    std::cout <<"\nThreadPool started with 1 worker\n";
+
     tp.Enqueue(sa, Task::lo);
+    std::cout << "Task1 with low priority added\n";
+
     tp.Enqueue(qa, Task::lo);
-//sleep(4);
+    std::cout << "Task2 with low priority added\n";
+
     tp.Stop();
 
-    std::cout << str << " " << "- good if task with 3 seconds runs and no task with 1 second after it\n";
+    std::cout << "\n- good if Task1 run and Task2 - not \n\n";
 }
 
 void Test3_0() { //"Low task does not start until there is higher priority in queue", 3
-    std::string str = std::string(__FUNCTION__) + std::string(": low priority task does not start until there is higher priority in queue");
+    std::cout << std::string(__FUNCTION__) + std::string(": low priority task does not start until there is higher priority in queue");
 
-    SlowAnswer sa(2);
-    SlowAnswer qa(1);
+    SlowAnswer t1(2, "Task1 run!");
+    SlowAnswer t2(2, "Task2 run!");
+    SlowAnswer t3(2, "Task3 run!");
+    SlowAnswer t4(1, "Task4 run!");
 
     ThreadPool tp(1);
-    tp.Enqueue(sa, Task::hi);
-    tp.Enqueue(sa, Task::hi);
-    tp.Enqueue(sa, Task::hi);
-    tp.Enqueue(qa, Task::lo);
+    std::cout << "\nThreadPool started with 1 worker\n";
+
+    tp.Enqueue(t1, Task::hi);
+    std::cout << "Task1 with hi priority added\n";
+    tp.Enqueue(t2, Task::hi);
+    std::cout << "Task2 with hi priority added\n";
+    tp.Enqueue(t3, Task::hi);
+    std::cout << "Task3 with hi priority added\n";
+    tp.Enqueue(t4, Task::lo);
+    std::cout << "Task4 with lo priority added\n";
 sleep(5);
     tp.Stop();
 
-    std::cout << str << " " << "- good if 3 task with 2 seconds runs and no task with 1 second after it\n";
+    std::cout << "\n- good if Task1, Task2, Task3 run and Task4 not\n\n";
 }
 void Test3_1() { //"Low task runs if no hi and norm are in queue and there are free workers", 31
-    std::string str = std::string(__FUNCTION__) + std::string(": Low task runs if no hi and norm are in queue and there are free workers");
+    std::cout << std::string(__FUNCTION__) + std::string(": Low task runs if no hi and norm are in queue and there are free workers\n");
 
-    std::cout << str << " " << "- good if 3 task with 2 seconds runs and task with 1 second runs after'em\n";
+    SlowAnswer t1(2, "Task1 run!");
+    SlowAnswer t2(2, "Task2 run!");
+    SlowAnswer t3(2, "Task3 run!");
+    SlowAnswer t4(1, "Task4 run!");
+
+    ThreadPool tp(1);
+    std::cout << "ThreadPool started with 1 worker\n";
+
+    tp.Enqueue(t1, Task::norm);
+    std::cout << "Task1 with norm priority added\n";
+    tp.Enqueue(t2, Task::hi);
+    std::cout << "Task2 with hi priority added\n";
+    tp.Enqueue(t3, Task::hi);
+    std::cout << "Task3 with hi priority added\n";
+    tp.Enqueue(t4, Task::lo);
+    std::cout << "Task4 with lo priority added\n";
+
+    sleep(7);
+    tp.Stop();
+
+    std::cout << "\n- good if Task2, Task3, Task1 run and Task4 run after'em\n\n";
 }
 
-void Test4() { //"Normal task runs after 3 hi tasks", 4
-    std::string str = std::string(__FUNCTION__) + std::string(": Normal task runs after 3 hi tasks");
-//
-    throw TE(__FUNCTION__);
+void Test4() { //"Normal task runs after 3 hi tasks"
+    std::cout << std::string(__FUNCTION__) + std::string(": Normal task runs after 3 hi tasks\n");
+    SlowAnswer t1(1, "Task1 run!");
+    SlowAnswer t2(1, "Task2 run!");
+    SlowAnswer t3(1, "Task3 run!");
+    SlowAnswer t4(1, "Task4 run!");
+    SlowAnswer t5(1, "Task5 run!");
+
+    ThreadPool tp(2);
+    std::cout << "\nThreadPool started with 1 workers\n";
+
+    tp.Enqueue(t1, Task::hi);
+    std::cout << "Task1 with hi priority added\n";
+    tp.Enqueue(t2, Task::norm);
+    std::cout << "Task2 with norm priority added\n";
+    tp.Enqueue(t3, Task::hi);
+    std::cout << "Task3 with hi priority added\n";
+    tp.Enqueue(t4, Task::hi);
+    std::cout << "Task4 with hi priority added\n";
+    tp.Enqueue(t5, Task::hi);
+    std::cout << "Task5 with hi priority added\n";
+
+    sleep(3);
+    tp.Stop();
+
+    std::cout << "\n- good if Tasks 1,3,4(hi) run, Task1(norm) run, Task5(hi) run in this order\n\n";
 }
 void Test4_1() {//"Normal task runs if no hi tasks in queue", 51
-    std::string str = std::string(__FUNCTION__) + std::string(": Normal task runs if no hi tasks in queue");
-//
-    throw TE(__FUNCTION__);
+    std::cout << std::string(__FUNCTION__) + std::string(": Normal task runs if no hi tasks in queue\n");
+
+    SlowAnswer t1(1, "Task1 run!");
+    SlowAnswer t2(1, "Task2 run!");
+    SlowAnswer t3(1, "Task3 run!");
+    SlowAnswer t4(1, "Task4 run!");
+    SlowAnswer t5(1, "Task5 run!");
+
+    ThreadPool tp(2);
+    std::cout << "\nThreadPool started with 2 workers\n";
+
+    tp.Enqueue(t1, Task::norm);
+    std::cout << "Task1 with norm priority added\n";
+    tp.Enqueue(t2, Task::hi);
+    std::cout << "Task2 with hi priority added\n";
+    tp.Enqueue(t3, Task::hi);
+    std::cout << "Task3 with hi priority added\n";
+
+    sleep(2);
+    tp.Stop();
+
+    std::cout << "\n- good if Tasks 2,3(hi) run, Task1(norm) run in this order\n\n";
 }
 void Test5() { // "No new tasks run after Stop() call", 6
-    std::string str = std::string(__FUNCTION__) + std::string(": No new tasks run after Stop() call");
-//
-    throw TE(__FUNCTION__);
-}
-void Test6() { //Stack errors on Task 6
-    std::string str = std::string(__FUNCTION__) + std::string(": Stack error on Task");
-//
-    throw TE(__FUNCTION__);
-}
-void Test6_1() { //Dynamic memory error on Task 61
-    std::string str = std::string(__FUNCTION__) + std::string(": Dynamic memory error on Task");
-//
-    throw TE(__FUNCTION__);
-}
-void Test6_2() {// Divizion by 0 on Task 62
-    std::string str = std::string(__FUNCTION__) + std::string(": Divizion by 0 on Task");
-//
-    throw TE(__FUNCTION__);
+    std::cout << std::string(__FUNCTION__) + std::string(": No new tasks run after Stop() call\n");
 
-}
+    SlowAnswer t1(1, "Task1 run!");
+    SlowAnswer t2(1, "Task2 run!");
 
+    ThreadPool tp(2);
+    std::cout << "\nThreadPool started with 2 workers\n";
+
+    tp.Enqueue(t1, Task::norm);
+    std::cout << "Task1 with norm priority added\n";
+    tp.Stop();
+    std::cout << "Stop() run\n";
+    bool no_way = tp.Enqueue(t2, Task::hi);
+    if(no_way) {
+        std::cout << "Task2 with hi priority was not added after Stop() call - Ok\n";
+    }
+    else {
+        throw TE(__FUNCTION__);
+    }
+}

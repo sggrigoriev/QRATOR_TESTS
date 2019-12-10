@@ -25,11 +25,8 @@ void Test4_1(); //Normal task runs if no hi tasks in queue
 
 void Test5(); //"No new tasks run after Stop() call
 
-void Test6(); //Stack errors on Task 6
-void Test6_1(); //Dynamic memory error on Task 61
-void Test6_2(); // Divizion by 0 on Task 62
 
-#define TESTS_AMOUNT 10
+#define TESTS_AMOUNT 7
 typedef void(*test_t)();
 
 

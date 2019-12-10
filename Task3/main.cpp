@@ -10,15 +10,12 @@ test_t test_set[TESTS_AMOUNT] = {
         Test4,
         Test4_1,
         Test5,
-        Test6,
-        Test6_1,
-        Test6_2
 };
 
 int main() {
 
     try {
-        for (int i = 2; i < 3; i++) {
+        for (int i = 0; i < TESTS_AMOUNT; i++) {
             test_set[i]();
         }
     }
