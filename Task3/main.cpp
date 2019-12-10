@@ -18,7 +18,7 @@ test_t test_set[TESTS_AMOUNT] = {
 int main() {
 
     try {
-        for (int i = 3; i < 4; i++) {
+        for (int i = 2; i < 3; i++) {
             test_set[i]();
         }
     }

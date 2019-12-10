@@ -79,8 +79,8 @@ sleep(5);
 }
 void Test3_1() { //"Low task runs if no hi and norm are in queue and there are free workers", 31
     std::string str = std::string(__FUNCTION__) + std::string(": Low task runs if no hi and norm are in queue and there are free workers");
-//
-    throw TE(__FUNCTION__);
+
+    std::cout << str << " " << "- good if 3 task with 2 seconds runs and task with 1 second runs after'em\n";
 }
 
 void Test4() { //"Normal task runs after 3 hi tasks", 4
