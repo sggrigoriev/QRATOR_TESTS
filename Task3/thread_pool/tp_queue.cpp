@@ -29,22 +29,41 @@ bool TpQueue::empty(Task::priority_t p) const {
                 3 hi взяли полряд && !q[Task::norm].empty()
     getHi:      !q[Task::hi].empty() && !(3 hi взяли полряд && !q[Task::norm].empty())
  */
-bool PrtTpQueue::each3rdRule() {
-    return (hi_in_a_row >= 3) && !q[Task::norm].empty();
+
+bool PrtTpQueue::empty()  {
+    bool no_hi, no_norm, no_lo;
+
+    pthread_mutex_lock(&q_mutex);
+        no_hi = TpQueue::empty(Task::hi);
+        no_norm = TpQueue::empty(Task::norm);
+        no_lo = TpQueue::empty(Task::lo);
+    pthread_mutex_unlock(&q_mutex);
+
+    return no_hi&&no_norm&&no_lo;
 }
-bool PrtTpQueue::empty() const  {return TpQueue::empty(Task::hi)&&TpQueue::empty(Task::norm)&&TpQueue::empty(Task::lo);}
 
 Task& PrtTpQueue::get() {
+    Task* ret = NULL;
+    pthread_mutex_lock(&q_mutex);
     if(!TpQueue::empty(Task::hi) && !each3rdRule()) {
         hi_in_a_row++;
-        return TpQueue::get(Task::hi);
+        ret = &TpQueue::get(Task::hi);
     }
-    if((TpQueue::empty(Task::hi) || each3rdRule()) && !TpQueue::empty(Task::norm)) {
+    else if((TpQueue::empty(Task::hi) || each3rdRule()) && !TpQueue::empty(Task::norm)) {
         hi_in_a_row = 0;
-        return TpQueue::get(Task::norm);
+        ret = &TpQueue::get(Task::norm);
     }
-    if(!TpQueue::empty(Task::lo)) {
+    else if(!TpQueue::empty(Task::lo)) {
         hi_in_a_row = 0;
-        return TpQueue::get(Task::lo);
+        ret = &TpQueue::get(Task::lo);
     }
+    pthread_mutex_unlock(&q_mutex);
+    return *ret;
+}
+
+/**
+ * No protection!
+ */
+bool PrtTpQueue::each3rdRule() {
+    return  (hi_in_a_row >= 3) && !TpQueue::empty(Task::norm);
 }

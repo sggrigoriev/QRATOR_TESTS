@@ -15,6 +15,7 @@
 #include <queue>
 #include <vector>
 #include <cassert>
+#include <pthread.h>
 
 #include "task.hpp"
 
@@ -29,12 +30,14 @@ protected:
 
 class PrtTpQueue: private TpQueue {
 public:
-    PrtTpQueue(): hi_in_a_row(0) {}
-    void add(Task* t, Task::priority_t p) {TpQueue::add(t, p);}
+    PrtTpQueue(): hi_in_a_row(0) {pthread_mutex_init(&q_mutex, NULL);}
+    ~PrtTpQueue() {pthread_mutex_destroy(&q_mutex);}
+    void add(Task* t, Task::priority_t p) {pthread_mutex_lock(&q_mutex); TpQueue::add(t, p); pthread_mutex_unlock(&q_mutex);}
     Task& get();
-    bool empty() const;
+    bool empty();
 private:
     int hi_in_a_row;
+    pthread_mutex_t q_mutex;
 
     bool each3rdRule();
 };

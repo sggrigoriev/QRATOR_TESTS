@@ -25,9 +25,11 @@ void* ThreadStarter::thread_proc(void *param) {
 
 bool TaskStarter::run() throw (TP_exception) {
     if(pthread_attr_init(&attr)) throw TP_exception("TaskStarter::run: pthread_attr_init error. Abort.");
+    vacant.set(false);
     bool ret = (pthread_create(&id, &attr, &TaskStarter::thread_proc, (void*)this) == 0);
 
-    if(ret) vacant.set(false);
+    if(!ret)
+        vacant.set(true);
     return ret;
 }
 void* TaskStarter::thread_proc(void *param) {

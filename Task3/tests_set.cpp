@@ -37,6 +37,7 @@ void Test1_0() { // "Task test: calc smth inside, get result", 10
     AxB ab(2,2);
     ThreadPool tp(1);
     tp.Enqueue(ab, Task::norm);
+
     tp.Stop();
 
     if(ab.getResult() == 4)
@@ -45,16 +46,24 @@ void Test1_0() { // "Task test: calc smth inside, get result", 10
         throw TE(__FUNCTION__);
     }
 }
-void Test2_0() { //"Task test: delay N seconds, print result", 20
-    std::string str = std::string(__FUNCTION__) + std::string(": delay N seconds, print result");
-//
-    throw TE(__FUNCTION__);
+void Test2_0() { //"Tthe task can't start if no available workers
+    std::string str = std::string(__FUNCTION__) + std::string(": the task can't start if no available workers");
+
+    SlowAnswer sa(3);
+    SlowAnswer qa(1);
+
+    ThreadPool tp(1);
+    tp.Enqueue(sa, Task::lo);
+    tp.Enqueue(qa, Task::lo);
+//sleep(4);
+    tp.Stop();
+    std::cout << str << " " << "- good if task with 3 seconds runs and no task with 1 second after it\n";
 }
 
 void Test3_0() { //"Low task does not start until there is higher priority in queue", 3
-    std::string str = std::string(__FUNCTION__) + std::string(": ow task does not start until there is higher priority in queue");
-//
-    throw TE(__FUNCTION__);
+    std::string str = std::string(__FUNCTION__) + std::string(": low priority task does not start until there is higher priority in queue");
+
+    std::cout << str << " " << "- good if task with 3 seconds runs and no task with 1 second after it\n";
 }
 void Test3_1() { //"Low task runs if no hi and norm are in queue and there are free workers", 31
     std::string str = std::string(__FUNCTION__) + std::string(": Low task runs if no hi and norm are in queue and there are free workers");
