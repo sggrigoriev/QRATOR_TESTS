@@ -20,6 +20,6 @@ add_executable(Task3
         thread_pool/thread_starter.cpp
         thread_pool/manager.cpp
         thread_pool/workers.cpp
-        )
+        start_params.cpp )
 
 target_link_libraries(Task3 ${REQUIRED_LIBRARIES})

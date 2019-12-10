@@ -6,6 +6,7 @@
 
 #include <unistd.h>
 #include <iostream>
+#include <cstdio>
 
 #include "task.hpp"
 #include "thread_pool.hpp"
@@ -24,6 +25,8 @@ private:
 class SlowAnswer: public Task {
 public:
     SlowAnswer(time_t sec_interval, const std::string& str): delay(sec_interval), s(str) {}
+    void setName(const std::string& name) {s = name;}
+    void setDelay(time_t sec) {delay = sec;}
     virtual void _do() {
         sleep(delay);
         std::cout << "\n" << s << "\n";
@@ -191,3 +194,38 @@ void Test5() { // "No new tasks run after Stop() call", 6
         throw TE(__FUNCTION__);
     }
 }
+
+void createSA(std::vector<SlowAnswer>& v, pair_t& par, const std::string& name) {
+    char buf[30];
+    snprintf(buf, sizeof(buf), "%ld", par.seconds);
+    for(int i = 0; i < par.amt; i++) {
+        SlowAnswer sa(par.seconds, name+std::string(buf)+std::string(" run"));
+        v.push_back(sa);
+    }
+}
+void runSA(ThreadPool& tp, std::vector<SlowAnswer>& sa, Task::priority_t p) {
+    for(int i = 0; i < sa.size(); i++) {
+        tp.Enqueue(sa[i], p);
+    }
+}
+
+void TestHand(t_prog_params params) {
+    std::vector<SlowAnswer> hi;
+    std::vector<SlowAnswer> norm;
+    std::vector<SlowAnswer> lo;
+
+    createSA(hi, params.hi, "High Task");
+    createSA(norm, params.norm, "Norm Task");
+    createSA(lo, params.lo, "Low Task");
+
+    ThreadPool tp(params.workers_amt);
+
+    runSA(tp, hi, Task::hi);
+    runSA(tp, norm, Task::norm);
+    runSA(tp, lo, Task::lo);
+
+    if(params.delay_before_stop > 0) sleep(params.delay_before_stop);
+
+    tp.Stop();
+}
+

@@ -5,8 +5,10 @@
 #ifndef TASK3_TESTS_SET_HPP
 #define TASK3_TESTS_SET_HPP
 
+#include "start_params.hpp"
 
 #include <stdexcept>
+
 
 
 struct TE : std::runtime_error {
@@ -28,6 +30,8 @@ void Test5(); //"No new tasks run after Stop() call
 
 #define TESTS_AMOUNT 7
 typedef void(*test_t)();
+
+void TestHand(t_prog_params params);
 
 
 
