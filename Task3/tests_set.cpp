@@ -196,10 +196,10 @@ void Test5() { // "No new tasks run after Stop() call", 6
 }
 
 void createSA(std::vector<SlowAnswer>& v, pair_t& par, const std::string& name) {
-    char buf[30];
-    snprintf(buf, sizeof(buf), "%ld", par.seconds);
     for(int i = 0; i < par.amt; i++) {
-        SlowAnswer sa(par.seconds, name+std::string(buf)+std::string(" run"));
+        char buf[30];
+        snprintf(buf, sizeof(buf), "#%d  %ldsec", i, par.seconds);
+        SlowAnswer sa(par.seconds, name+std::string(" ")+std::string(buf)+std::string(" run"));
         v.push_back(sa);
     }
 }
