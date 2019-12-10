@@ -2,6 +2,7 @@
  Created by gsg on 10/12/2019.
 */
 
+#include <iostream>
 #include "thread_starter.hpp"
 
 bool ThreadStarter::run() throw (TP_exception) {

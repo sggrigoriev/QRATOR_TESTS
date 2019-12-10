@@ -22,7 +22,6 @@ public:
 protected:
     Task& task;
 
-
     pthread_t id;
     pthread_attr_t attr;
 

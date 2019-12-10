@@ -25,6 +25,7 @@ void Workers::cleanClearing(clean_t mode) {
     while(it != running.end()) {
         if((*it)->isVacant() || (mode == CLEAN_ALL)) {
             (*it)->stop();
+            delete (*it);
             it = running.erase(it);
         }
         else {

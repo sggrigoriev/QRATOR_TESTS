@@ -13,7 +13,9 @@ template <typename value_type>
 class Locked {
 public:
     Locked(value_type val): value(val) { pthread_mutex_init(&mutex, NULL);}
-    ~Locked() { pthread_mutex_destroy(&mutex); }
+    ~Locked() {
+        pthread_mutex_destroy(&mutex);
+    }
     void set(value_type val) {
         pthread_mutex_lock(&mutex);
         value = val;

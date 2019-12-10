@@ -57,13 +57,25 @@ void Test2_0() { //"Tthe task can't start if no available workers
     tp.Enqueue(qa, Task::lo);
 //sleep(4);
     tp.Stop();
+
     std::cout << str << " " << "- good if task with 3 seconds runs and no task with 1 second after it\n";
 }
 
 void Test3_0() { //"Low task does not start until there is higher priority in queue", 3
     std::string str = std::string(__FUNCTION__) + std::string(": low priority task does not start until there is higher priority in queue");
 
-    std::cout << str << " " << "- good if task with 3 seconds runs and no task with 1 second after it\n";
+    SlowAnswer sa(2);
+    SlowAnswer qa(1);
+
+    ThreadPool tp(1);
+    tp.Enqueue(sa, Task::hi);
+    tp.Enqueue(sa, Task::hi);
+    tp.Enqueue(sa, Task::hi);
+    tp.Enqueue(qa, Task::lo);
+sleep(5);
+    tp.Stop();
+
+    std::cout << str << " " << "- good if 3 task with 2 seconds runs and no task with 1 second after it\n";
 }
 void Test3_1() { //"Low task runs if no hi and norm are in queue and there are free workers", 31
     std::string str = std::string(__FUNCTION__) + std::string(": Low task runs if no hi and norm are in queue and there are free workers");
