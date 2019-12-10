@@ -37,9 +37,10 @@ void Test1_0() { // "Task test: calc smth inside, get result", 10
     AxB ab(2,2);
     ThreadPool tp(1);
     tp.Enqueue(ab, Task::norm);
+//    sleep(1);
     tp.Stop();
     if(ab.getResult() == 4)
-        std::cout << str << " " << "OK";
+        std::cout << str << " " << "OK\n";
     else {
         throw TE(__FUNCTION__);
     }

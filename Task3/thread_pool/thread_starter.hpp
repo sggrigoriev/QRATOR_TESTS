@@ -16,16 +16,27 @@
 
 class ThreadStarter {
 public:
-    explicit ThreadStarter(Task& t, Sync& _syn);
+    explicit ThreadStarter(Task& t): task(t) {};
     bool run() throw (TP_exception);
-    bool isVacant() const { return vacant.get(); }
-private:
+    void stop();
+protected:
     Task& task;
-    Sync& syn;
-    Locked<bool> vacant;
+
 
     pthread_t id;
     pthread_attr_t attr;
+
+    static void* thread_proc(void* param);
+};
+
+class TaskStarter: public ThreadStarter {
+public:
+    TaskStarter(Task& t, Sync& _syn): ThreadStarter(t), syn(_syn), vacant(true) {};
+    bool run() throw (TP_exception);
+    bool isVacant() const { return vacant.get(); }
+private:
+    Sync& syn;
+    Locked<bool> vacant;
 
     static void* thread_proc(void* param);
 };

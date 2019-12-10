@@ -9,6 +9,7 @@ void Manager::_do() {
         Task::priority_t p;
         switch (syn.Wait()) {
             case Sync::SYN_THREAD_STOPS:
+                wrk.cleanClearing(Workers::CLEAN);
                 if(!q.empty()) {
                     wrk.runTask(q.get());
                 }

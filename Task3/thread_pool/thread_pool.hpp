@@ -18,7 +18,7 @@
 class ThreadPool {
 public:
     explicit ThreadPool(size_t workers_amount) throw(TP_exception);
-    ~ThreadPool();
+    ~ThreadPool(){};
     bool Enqueue(Task& t, Task::priority_t p) throw(TP_exception);
     void Stop();
 

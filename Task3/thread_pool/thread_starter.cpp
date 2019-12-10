@@ -4,26 +4,37 @@
 
 #include "thread_starter.hpp"
 
-ThreadStarter::ThreadStarter(Task& t, Sync& _syn): task(t), syn(_syn), vacant(true)  {}
-
 bool ThreadStarter::run() throw (TP_exception) {
-    bool ret;
-    if(pthread_attr_init(&attr)) throw TP_exception("ThreadStarter::ThreadStarter: pthread_attr_init error. Abort.");
-    if (ret = (pthread_create(&id, &attr, &ThreadStarter::thread_proc, (void*)this)==0), ret) {
-        vacant.set(false);
-    }
-    return ret;
+    if(pthread_attr_init(&attr)) throw TP_exception("ThreadStarter::run: pthread_attr_init error. Abort.");
+    return (pthread_create(&id, &attr, &ThreadStarter::thread_proc, (void*)this) == 0);
+}
+
+void ThreadStarter::stop() {
+    void *ret;
+    pthread_join(id, &ret);
+    pthread_attr_destroy(&attr);
 }
 
 void* ThreadStarter::thread_proc(void *param) {
     ThreadStarter *starter = reinterpret_cast<ThreadStarter*>(param);
     starter->task._do();
+    pthread_exit(NULL);
+}
 
-    void *ret;
-    pthread_join(starter->id, &ret);
-    pthread_attr_destroy(&starter->attr);
+/////////////////////////////////////////////////////////
 
+bool TaskStarter::run() throw (TP_exception) {
+    if(pthread_attr_init(&attr)) throw TP_exception("TaskStarter::run: pthread_attr_init error. Abort.");
+    bool ret = (pthread_create(&id, &attr, &TaskStarter::thread_proc, (void*)this) == 0);
 
-    starter->syn.Notify(Sync::SYN_THREAD_STOPS);
+    if(ret) vacant.set(false);
+    return ret;
+}
+void* TaskStarter::thread_proc(void *param) {
+    TaskStarter *starter = reinterpret_cast<TaskStarter*>(param);
+    starter->task._do();
+
     starter->vacant.set(true);
+    starter->syn.Notify(Sync::SYN_THREAD_STOPS);
+    pthread_exit(NULL);
 }

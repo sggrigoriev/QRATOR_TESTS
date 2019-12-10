@@ -8,18 +8,29 @@
 #define TASK3_WORKERS_HPP
 
 #include <cstdlib>
+#include <list>
 
 #include "task.hpp"
 #include "tp_exception.hpp"
 
+#include "thread_starter.hpp"
+
 
 class Workers {
 public:
-    Workers(size_t amt){}
-    ~Workers(){}
-    void killall() {}
-    void runTask(Task& t) throw(TP_exception){}
-    bool vacant() const {}
+    typedef enum {CLEAN, CLEAN_ALL} clean_t;
+    Workers(size_t amt, Sync& _syn): size(amt), syn(_syn){}
+    ~Workers() { if(!running.empty()) cleanClearing(CLEAN_ALL); }
+
+    void runTask(Task& t) throw(TP_exception);
+    void cleanClearing(clean_t mode);
+    bool vacant() const {return (size-running.size()) > 0;}
+private:
+    typedef std::list<TaskStarter*> ts_list_t;
+
+    size_t size;
+    ts_list_t running;
+    Sync& syn;
 };
 
 

@@ -2,16 +2,18 @@
  Created by gsg on 09/12/2019.
 */
 #include <cassert>
+#include <zconf.h>
 
 #include "thread_pool.hpp"
 
 
 ThreadPool::ThreadPool(size_t workers_amount) throw(TP_exception)
-        : wrk(workers_amount), mgr(syn, q, wrk), ts(mgr, syn)  {
+        : wrk(workers_amount, syn), mgr(syn, q, wrk), ts(mgr)  {
     assert(workers_amount);
     all_stops = false;
 
-    if(!ts.run()) throw TP_exception("ThreadPool::ThreadPool: Error on Manager() start. Aborted.");
+    if(!ts.run())
+        throw TP_exception("ThreadPool::ThreadPool: Error on Manager() start. Aborted.");
 }
 
 bool ThreadPool::Enqueue(Task& t, Task::priority_t p) throw(TP_exception) {
@@ -27,5 +29,5 @@ bool ThreadPool::Enqueue(Task& t, Task::priority_t p) throw(TP_exception) {
 void ThreadPool::Stop() {
     all_stops = true;
     syn.Notify(Sync::SYN_TOTAL_STOP);
-    wrk.killall();
+    wrk.cleanClearing(Workers::CLEAN_ALL);
 }

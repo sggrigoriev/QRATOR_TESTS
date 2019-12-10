@@ -11,7 +11,25 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b3f222e7-e307-42e2-a53c-b475f468752c" name="Default Changelist" comment="" />
+    <list default="true" id="b3f222e7-e307-42e2-a53c-b475f468752c" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task2/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task3/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task3/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task3/.idea/Task3.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task3/CMakeLists.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task3/main.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task3/readme.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Task1.dir/C.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Task1.dir/C.includecache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Task1.dir/local_min.c.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Task1.dir/local_min.c.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Task1.dir/main.c.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Task1.dir/main.c.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Task1" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Task1" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task2/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Task2/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task2/cmake-build-debug/CMakeFiles/Task2.dir/main.c.o" beforeDir="false" afterPath="$PROJECT_DIR$/../Task2/cmake-build-debug/CMakeFiles/Task2.dir/main.c.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task2/cmake-build-debug/CMakeFiles/Task2.dir/n_swaps.c.o" beforeDir="false" afterPath="$PROJECT_DIR$/../Task2/cmake-build-debug/CMakeFiles/Task2.dir/n_swaps.c.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task2/cmake-build-debug/Task2" beforeDir="false" afterPath="$PROJECT_DIR$/../Task2/cmake-build-debug/Task2" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -21,7 +39,11 @@
     <option name="formatViaClangd" value="false" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
   <component name="ProjectId" id="1UjxD9p7tJfum4KPrdmU56KTb9g" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -29,6 +51,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="/media/sf_GWDrive/Agents/TenvisProd" />
     <property name="node.js.detected.package.eslint" value="true" />
@@ -72,7 +95,9 @@
       <updated>1575883683396</updated>
       <workItem from="1575883685072" duration="7003000" />
       <workItem from="1575891866782" duration="2133000" />
-      <workItem from="1575897851014" duration="4469000" />
+      <workItem from="1575897851014" duration="5351000" />
+      <workItem from="1575916318080" duration="1159000" />
+      <workItem from="1575918211767" duration="1732000" />
     </task>
     <servers />
   </component>
@@ -80,22 +105,22 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1807" height="293" key="GridCell.Tab.0.bottom" timestamp="1575896858660">
+    <state width="1807" height="237" key="GridCell.Tab.0.bottom" timestamp="1575921671235">
       <screen x="67" y="27" width="1853" height="927" />
     </state>
-    <state width="1807" height="293" key="GridCell.Tab.0.bottom/67.27.1853.927@67.27.1853.927" timestamp="1575896858660" />
-    <state width="1807" height="293" key="GridCell.Tab.0.center" timestamp="1575896858658">
+    <state width="1807" height="237" key="GridCell.Tab.0.bottom/67.27.1853.927@67.27.1853.927" timestamp="1575921671235" />
+    <state width="1807" height="237" key="GridCell.Tab.0.center" timestamp="1575921671232">
       <screen x="67" y="27" width="1853" height="927" />
     </state>
-    <state width="1807" height="293" key="GridCell.Tab.0.center/67.27.1853.927@67.27.1853.927" timestamp="1575896858658" />
-    <state width="1807" height="293" key="GridCell.Tab.0.left" timestamp="1575896858658">
+    <state width="1807" height="237" key="GridCell.Tab.0.center/67.27.1853.927@67.27.1853.927" timestamp="1575921671232" />
+    <state width="1807" height="237" key="GridCell.Tab.0.left" timestamp="1575921671231">
       <screen x="67" y="27" width="1853" height="927" />
     </state>
-    <state width="1807" height="293" key="GridCell.Tab.0.left/67.27.1853.927@67.27.1853.927" timestamp="1575896858658" />
-    <state width="1807" height="293" key="GridCell.Tab.0.right" timestamp="1575896858659">
+    <state width="1807" height="237" key="GridCell.Tab.0.left/67.27.1853.927@67.27.1853.927" timestamp="1575921671231" />
+    <state width="1807" height="237" key="GridCell.Tab.0.right" timestamp="1575921671233">
       <screen x="67" y="27" width="1853" height="927" />
     </state>
-    <state width="1807" height="293" key="GridCell.Tab.0.right/67.27.1853.927@67.27.1853.927" timestamp="1575896858659" />
+    <state width="1807" height="237" key="GridCell.Tab.0.right/67.27.1853.927@67.27.1853.927" timestamp="1575921671233" />
     <state width="1807" height="293" key="GridCell.Tab.1.bottom" timestamp="1575896858664">
       <screen x="67" y="27" width="1853" height="927" />
     </state>
