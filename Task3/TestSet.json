@@ -1,0 +1,91 @@
+[
+  {
+    "name": "Queued task should not start if Stop() called",
+    "expected": "Task#1 should not start",
+    "tasks": [
+      {"priority": "lo", "workTimeSec": 3},
+      {"priority": "lo", "workTimeSec": 1}
+    ],
+    "workersAmount" : 1,
+    "delaySecBeforeStop": 1,
+    "resultSet": [0]
+  },
+  {
+    "name": "Low priority task should not start if there are hi and/or norm priority tasks in queue",
+    "expected": "Task#3 should not start",
+    "tasks": [
+      {"priority": "hi", "workTimeSec": 1},
+      {"priority": "hi", "workTimeSec": 1},
+      {"priority": "hi", "workTimeSec": 1},
+      {"priority": "lo", "workTimeSec": 1}
+    ],
+    "workersAmount" : 1,
+    "delaySecBeforeStop": 3,
+    "resultSet": [0,1,2]
+  },
+  {
+    "name": "Low task runs if no hi and norm are in queue and there are free workers",
+    "expected": "Task#3 should start",
+    "tasks": [
+      {"priority": "norm", "workTimeSec": 2},
+      {"priority": "hi", "workTimeSec": 2},
+      {"priority": "hi", "workTimeSec": 2},
+      {"priority": "lo", "workTimeSec": 1}
+    ],
+    "workersAmount" : 1,
+    "delaySecBeforeStop": 7,
+    "resultSet": [0,1,2,3]
+  },
+  {
+    "name": "Normal task runs after each 3 hi tasks",
+    "expected": "Tasks 0,2,3(hi) run, Task1(norm) run, Task4(hi) run in this order",
+    "tasks": [
+      {"priority": "hi", "workTimeSec": 1},
+      {"priority": "norm", "workTimeSec": 1},
+      {"priority": "hi", "workTimeSec": 1},
+      {"priority": "hi", "workTimeSec": 1},
+      {"priority": "hi", "workTimeSec": 1}
+    ],
+    "workersAmount" : 2,
+    "delaySecBeforeStop": 3,
+    "result": [0,2,3,1,4]
+  },
+  {
+    "name": "Normal task runs if no hi tasks in queue",
+    "expected": "Tasks 0,2(hi) run, Task1(norm) run in this order",
+    "tasks": [
+      {"priority": "hi", "workTimeSec": 1},
+      {"priority": "hi", "workTimeSec": 1},
+      {"priority": "norm", "workTimeSec": 1}
+    ],
+    "workersAmount" : 2,
+    "delaySecBeforeStop": 2,
+    "result": [0,1,2]
+  },
+  {
+    "name": "Enqueue() returns false if Stop() called before",
+    "expected": "Task0, Task1 not. Enqueue returns false",
+    "stop_after": 0,
+    "tasks": [
+      {"priority": "norm", "workTimeSec": 2},
+      {"priority": "hi", "workTimeSec": 1}
+    ],
+    "workersAmount" : 2,
+    "delaySecBeforeStop": 1,
+    "resultSet": [0]
+  },
+  {
+    "name": "Negative test",
+    "expected": "Tasks 0,1,2 run, Task3 run, Task4 run in this order",
+    "tasks": [
+      {"priority": "hi", "workTimeSec": 1},
+      {"priority": "norm", "workTimeSec": 1},
+      {"priority": "hi", "workTimeSec": 1},
+      {"priority": "hi", "workTimeSec": 1},
+      {"priority": "hi", "workTimeSec": 1}
+    ],
+    "workersAmount" : 2,
+    "delaySecBeforeStop": 3,
+    "result": [0,1,2,3,4]
+  }
+]

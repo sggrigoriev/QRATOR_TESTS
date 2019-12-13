@@ -134,11 +134,17 @@ static int n_shaker(int* a, size_t size, bool ascending) {
     return ret;
 }
 
-int n_swaps(int *a, size_t size) {
+static int x_swaps(int *a, size_t size, int(*proc)(int*, size_t, bool)) {
     if(!a || size < 3) return -1;
 
     res_t k = n_min(a, size);
-    return k.ops + n_gnome(a, k.idx, NS_DESC) + n_gnome(a+k.idx+1, size-k.idx-1, NS_ASC);
+    return k.ops + proc(a, k.idx, NS_DESC) + proc(a+k.idx+1, size-k.idx-1, NS_ASC);
+}
+int n_swaps(int *a, size_t size) {
+    return x_swaps(a, size, n_gnome);
+}
+int n_swaps_shaker(int *a, size_t size) {
+    return x_swaps(a, size, n_shaker);
 }
 
 

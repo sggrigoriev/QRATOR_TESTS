@@ -1,32 +1,30 @@
 [
   {
-    "name":  "Array size < 2",
-    "data":   [1],
-    "result": -1
+    "name":  "Array size < 3",
+    "data":   [1,2]
   },
   {
-    "name":  "No local min: all elements are equal",
-    "data":   [1,1,1,1],
-    "result": -1
+    "name":  "Min on the left, no swaps",
+    "data":   [1,2,3,4,5]
   },
   {
-    "name":  "Local min on left border",
-    "data":   [5,6,7,6],
-    "result": 0
+    "name":  "Min on the right, no swaps",
+    "data":   [5,4,3,2,1]
   },
   {
-    "name":  "Local min on right border",
-    "data":   [10,8,6,5],
-    "result": 3
+    "name":  "No min",
+    "data":   [1,1,1]
   },
   {
-    "name":  "No local min: plateu",
-    "data":   [7,6,5,4,4,4,5,6,7],
-    "result": -1
+    "name":  "Min on the left",
+    "data":   [1,2,3,4,5,1,4,3,2,1]
   },
   {
-    "name":  "Several local mins - the first one found",
-    "data":   [7,6,5,4,5,4,5,4,5],
-    "result":  3
+    "name":  "Min on the middle, slightly sorted",
+    "data":   [5,7,6,8,0,2,3,4,18,10]
+  },
+  {
+    "name":  "Min on the middle, random values",
+    "data":   [40, 2, 61, 78, 67, 11, 13, 98, 63, 51, -1, 79, 4, 45, 88, 46, 4, 50, 68, 49, 29]
   }
 ]

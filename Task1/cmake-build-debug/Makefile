@@ -123,6 +123,60 @@ Task1/fast:
 	$(MAKE) -f CMakeFiles/Task1.dir/build.make CMakeFiles/Task1.dir/build
 .PHONY : Task1/fast
 
+home/gsg/ClionProjects/HomeTasks/cjson/cJSON.o: home/gsg/ClionProjects/HomeTasks/cjson/cJSON.c.o
+
+.PHONY : home/gsg/ClionProjects/HomeTasks/cjson/cJSON.o
+
+# target to build an object file
+home/gsg/ClionProjects/HomeTasks/cjson/cJSON.c.o:
+	$(MAKE) -f CMakeFiles/Task1.dir/build.make CMakeFiles/Task1.dir/home/gsg/ClionProjects/HomeTasks/cjson/cJSON.c.o
+.PHONY : home/gsg/ClionProjects/HomeTasks/cjson/cJSON.c.o
+
+home/gsg/ClionProjects/HomeTasks/cjson/cJSON.i: home/gsg/ClionProjects/HomeTasks/cjson/cJSON.c.i
+
+.PHONY : home/gsg/ClionProjects/HomeTasks/cjson/cJSON.i
+
+# target to preprocess a source file
+home/gsg/ClionProjects/HomeTasks/cjson/cJSON.c.i:
+	$(MAKE) -f CMakeFiles/Task1.dir/build.make CMakeFiles/Task1.dir/home/gsg/ClionProjects/HomeTasks/cjson/cJSON.c.i
+.PHONY : home/gsg/ClionProjects/HomeTasks/cjson/cJSON.c.i
+
+home/gsg/ClionProjects/HomeTasks/cjson/cJSON.s: home/gsg/ClionProjects/HomeTasks/cjson/cJSON.c.s
+
+.PHONY : home/gsg/ClionProjects/HomeTasks/cjson/cJSON.s
+
+# target to generate assembly for a file
+home/gsg/ClionProjects/HomeTasks/cjson/cJSON.c.s:
+	$(MAKE) -f CMakeFiles/Task1.dir/build.make CMakeFiles/Task1.dir/home/gsg/ClionProjects/HomeTasks/cjson/cJSON.c.s
+.PHONY : home/gsg/ClionProjects/HomeTasks/cjson/cJSON.c.s
+
+home/gsg/ClionProjects/HomeTasks/cjson/json_file_proc.o: home/gsg/ClionProjects/HomeTasks/cjson/json_file_proc.c.o
+
+.PHONY : home/gsg/ClionProjects/HomeTasks/cjson/json_file_proc.o
+
+# target to build an object file
+home/gsg/ClionProjects/HomeTasks/cjson/json_file_proc.c.o:
+	$(MAKE) -f CMakeFiles/Task1.dir/build.make CMakeFiles/Task1.dir/home/gsg/ClionProjects/HomeTasks/cjson/json_file_proc.c.o
+.PHONY : home/gsg/ClionProjects/HomeTasks/cjson/json_file_proc.c.o
+
+home/gsg/ClionProjects/HomeTasks/cjson/json_file_proc.i: home/gsg/ClionProjects/HomeTasks/cjson/json_file_proc.c.i
+
+.PHONY : home/gsg/ClionProjects/HomeTasks/cjson/json_file_proc.i
+
+# target to preprocess a source file
+home/gsg/ClionProjects/HomeTasks/cjson/json_file_proc.c.i:
+	$(MAKE) -f CMakeFiles/Task1.dir/build.make CMakeFiles/Task1.dir/home/gsg/ClionProjects/HomeTasks/cjson/json_file_proc.c.i
+.PHONY : home/gsg/ClionProjects/HomeTasks/cjson/json_file_proc.c.i
+
+home/gsg/ClionProjects/HomeTasks/cjson/json_file_proc.s: home/gsg/ClionProjects/HomeTasks/cjson/json_file_proc.c.s
+
+.PHONY : home/gsg/ClionProjects/HomeTasks/cjson/json_file_proc.s
+
+# target to generate assembly for a file
+home/gsg/ClionProjects/HomeTasks/cjson/json_file_proc.c.s:
+	$(MAKE) -f CMakeFiles/Task1.dir/build.make CMakeFiles/Task1.dir/home/gsg/ClionProjects/HomeTasks/cjson/json_file_proc.c.s
+.PHONY : home/gsg/ClionProjects/HomeTasks/cjson/json_file_proc.c.s
+
 local_min.o: local_min.c.o
 
 .PHONY : local_min.o
@@ -186,6 +240,12 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... Task1"
 	@echo "... edit_cache"
+	@echo "... home/gsg/ClionProjects/HomeTasks/cjson/cJSON.o"
+	@echo "... home/gsg/ClionProjects/HomeTasks/cjson/cJSON.i"
+	@echo "... home/gsg/ClionProjects/HomeTasks/cjson/cJSON.s"
+	@echo "... home/gsg/ClionProjects/HomeTasks/cjson/json_file_proc.o"
+	@echo "... home/gsg/ClionProjects/HomeTasks/cjson/json_file_proc.i"
+	@echo "... home/gsg/ClionProjects/HomeTasks/cjson/json_file_proc.s"
 	@echo "... local_min.o"
 	@echo "... local_min.i"
 	@echo "... local_min.s"

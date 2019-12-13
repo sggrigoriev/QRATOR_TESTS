@@ -15,6 +15,7 @@
  * @return      - operations amount or -1 if a == NULL or size < 3
  */
 int n_swaps(int *a, size_t size);
+int n_swaps_shaker(int *a, size_t size);
 
 
 #endif /* TASK2_N_SWAPS_H */

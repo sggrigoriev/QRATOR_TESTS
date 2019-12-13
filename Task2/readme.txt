@@ -29,20 +29,21 @@
 
 Результаты на тестовых данных:
 
-    Гномья сортировка:
-        Array=1 2 					    Array=1 2 Operations = -1
-        Array=1 2 3 4 5 				Array=1 2 3 4 5 Operations = 8
-        Array=5 4 3 2 1 				Array=5 4 3 2 1 Operations = 12
-        Array=1 1 1 					Array=1 1 1 Operations = 4
-        Array=1 2 3 4 5 1 4 3 2 1 		Array=1 1 1 2 2 3 3 4 4 5 Operations = 98       лучше
-        Array=5 7 6 8 0 2 3 4 18 10 	Array=8 7 6 5 0 2 3 4 10 18 Operations = 42     лучше
-        Array=2 3 4 5 0 5 4 3 2 1 		Array=5 4 3 2 0 1 2 3 4 5 Operations = 82       хуже
+                                                                       Гномья сортировка  Шейкерная сортировка
+Array=1 2 					                                            Operations = -1     Operations = -1
+Array=1 2 3 4 5 				                                        Operations = 8      Operations = 8
+Array=5 4 3 2 1 				                                        Operations = 12     Operations = 12
+Array=1 1 1 					                                        Operations = 4      Operations = 4
+Array=1 2 3 4 5 1 4 3 2 1 		                                        Operations = 98     Operations = 105
+Array=5 7 6 8 0 2 3 4 18 10 	                                        Operations = 42     Operations = 44
+Array=2 3 4 5 0 5 4 3 2 1 		                                        Operations = 241    Operations = 250
+Array=40 2 61 78 67 11 13 98 63 51 -1 79 4 45 88 46 4 50 68 49 29
 
-    Шейкерная сортировка:
-        Array=1 2 					    Array=1 2 Operations = -1
-        Array=1 2 3 4 5 				Array=1 2 3 4 5 Operations = 8
-        Array=5 4 3 2 1 				Array=5 4 3 2 1 Operations = 12
-        Array=1 1 1 					Array=1 1 1 Operations = 4
-        Array=1 2 3 4 5 1 4 3 2 1 		Array=1 1 1 2 2 3 3 4 4 5 Operations = 105      хуже
-        Array=5 7 6 8 0 2 3 4 18 10 	Array=8 7 6 5 0 2 3 4 10 18 Operations = 44     хуже
-        Array=2 3 4 5 0 5 4 3 2 1 		Array=5 4 3 2 0 1 2 3 4 5 Operations = 75       лучше
+Запуск тестов:
+    Task2 <путь к файлу с тестовыми данными>
+
+Описание полей TestSet.json:
+
+    "name" - описание теста, текстовая строка
+    "data" - массив целых чисел, сортируемые данные
+

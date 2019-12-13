@@ -10,16 +10,18 @@ set(REQUIRED_LIBRARIES
 
 include_directories(
         ./thread_pool
+        ../cjson
 )
 
 add_executable(Task3
         main.cpp
-        tests_set.cpp
         thread_pool/thread_pool.cpp
         thread_pool/tp_queue.cpp thread_pool/sync.cpp
         thread_pool/thread_starter.cpp
         thread_pool/manager.cpp
         thread_pool/workers.cpp
-        start_params.cpp )
+        ../cjson/json_file_proc.c
+        ../cjson/cJSON.c
+        test_helpers.cpp)
 
 target_link_libraries(Task3 ${REQUIRED_LIBRARIES})

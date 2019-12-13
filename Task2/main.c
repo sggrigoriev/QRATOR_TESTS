@@ -1,42 +1,60 @@
 #include <stdio.h>
+#include <assert.h>
+
+#include "json_file_proc.h"
 #include "n_swaps.h"
 
-#define TSZ(t) sizeof(t)/sizeof(int)
+static bool get_test_data(cJSON* test_set, int itemNo, char** name, int** data, int* size);
 
-int a0[] = {1,2};
-int a1[] = {1,2,3,4,5};
-int a2[] = {5,4,3,2,1};
-int a3[] = {1,1,1,};
-int a4[] = {1,2,3,4,5,1,4,3,2,1};
-int a5[] = {5,7,6,8,0,2,3,4,18,10};
-int a6[] = {2,3,4,5,0,5,4,3,2,1};
 
-static void print_array(const int* arr, size_t size) {
-    if(!arr || !size) {
-        printf("No array");
-        return;
+int main(int argc, char* argv[]) {
+    if (argc < 2)  {
+        printf("Usage: %s <JSON test data file>\n\n", argv[0]);
+        return 0;
     }
-    printf("Array=");
-    for(size_t i = 0; i < size; i++)
-        printf("%d ", arr[i]);
-}
-static void run_test(int* arr, size_t size) {
-    print_array(arr, size);
-    printf("\t\t\t\t\t");
-    int ops = n_swaps(arr, size);
-    print_array(arr, size);
-    printf("Operations = %d", ops);
-    printf("\n");
-}
+    cJSON* test_set = cj_parse(argv[1]);
+    if(!test_set) return -1;
 
-int main() {
-    run_test(a0, TSZ(a0));
-    run_test(a1, TSZ(a1));
-    run_test(a2, TSZ(a2));
-    run_test(a3, TSZ(a3));
-    run_test(a4, TSZ(a4));
-    run_test(a5, TSZ(a5));
-    run_test(a6, TSZ(a6));
+    for(int i = 0; i < cJSON_GetArraySize(test_set); i++) {
+        char* test_name;
+        int* test_array;
+        int array_size;
+        printf("\nTest# %d:\n", i);
+        if(!get_test_data(test_set, i, &test_name, &test_array, &array_size)) {
+            printf("\tfailed\n");
+            continue;
+        }
+        printf("Name: %s\n\t\t\t", test_name);
+        print_array(test_array, array_size);
+        printf("Sorted Array");
+        int ops = n_swaps(test_array, array_size);
+        print_array(test_array, array_size);
+        printf("Operations = %d\n", ops);
 
+        free(test_array);
+    }
+    cj_free(test_set);
     return 0;
 }
+
+static const char* t_name = "name";
+static const char* t_data = "data";
+
+static const char* data_bad = "Wrong test data:";
+
+static bool get_test_data(cJSON* test_set, int itemNo, char** name, int** data, int* size) {
+
+    cJSON* item = cJSON_GetArrayItem(test_set, itemNo);
+    assert(item != NULL);
+
+    if(!get_string(item, itemNo, t_name, name)) {
+        printf("%s item '%s' in test# %d not found or not a string.\n", data_bad, t_name, itemNo);
+        return false;
+    }
+    if(!get_int_array(item, itemNo, t_data, data, size)) {
+        printf("%s item '%s' in test# %d not found or not an int array or empty.\n", data_bad, t_data, itemNo);
+        return false;
+    }
+    return true;
+}
+

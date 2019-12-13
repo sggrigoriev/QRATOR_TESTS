@@ -1,58 +1,65 @@
 #include <stdio.h>
+#include <assert.h>
 
+#include "cJSON.h"
+#include "json_file_proc.h"
 #include "local_min.h"
 
-#define TSZ(t) sizeof(t)/sizeof(int)
 
-#define TESTS_AMT 6
+static bool get_test_data(cJSON* test_set, int itemNo, char** name, int** data, int* size, int* result);
 
-const char s0[] = "Array size < 2: ";
-const int t0[] = {1};
-#define a0 -1
 
-const char s1[] = "No local min: all elements are equal: ";
-const int t1[] = {1,1,1,1};
-#define a1 -1
-
-const char s2[] = "Local min on left border: ";
-const int t2[] = {5,6};
-#define a2 0
-
-const char s3[] = "Local min on right border: ";
-const int t3[] = {6,5};
-#define a3 1
-
-const char s4[] = "No local min: plateu: ";
-const int t4[] = {7,6,5,4,4,4,5,6,7};
-#define a4 -1
-
-const char s5[] = "Several local mins - find the first one: ";
-const int t5[] = {7,6,5,4,5,4,5,4,5};
-#define a5 3
-
-const char* s[TESTS_AMT] = {s0, s1, s2, s3, s4, s5};
-const int* t[TESTS_AMT] = {t0, t1, t2, t3, t4, t5 };
-const size_t sz[TESTS_AMT] = {TSZ(t0), TSZ(t1), TSZ(t2), TSZ(t3), TSZ(t4), TSZ(t5)};
-const ssize_t a[TESTS_AMT] = {a0, a1, a2, a3, a4, a5};
-
-static void print_array(const int* arr, size_t size);
-
-int main() {
-    printf("Task1: Local minimum finding\n\n");
-
-    for(size_t i = 0; i < TESTS_AMT; i++) {
-        print_array(t[i], sz[i]);
-        printf("%s%s\n", s[i], (local_min(t[i], sz[i]) == a[i]?"passed":"!!!failed!!!"));
+int main(int argc, char* argv[]) {
+    if (argc < 2)  {
+        printf("Usage: %s <JSON test data file>\n\n", argv[0]);
+        return 0;
     }
+    cJSON* test_set = cj_parse(argv[1]);
+    if(!test_set) return -1;
+
+    for(int i = 0; i < cJSON_GetArraySize(test_set); i++) {
+        char* test_name;
+        int* test_array;
+        int array_size;
+        int result;
+        printf("\nTest# %d:\n", i);
+        if(!get_test_data(test_set, i, &test_name, &test_array, &array_size, &result)) {
+            printf("\tfailed\n");
+            continue;
+        }
+        printf("Name: %s\n", test_name);
+        printf("Expected result: %d\n", result);
+        print_array(test_array, array_size);
+        printf("\t%s\n", (local_min(test_array, array_size) == result ? "passed" : "!!!failed!!!"));
+
+        free(test_array);
+    }
+    cj_free(test_set);
     return 0;
 }
 
-static void print_array(const int* arr, size_t size) {
-    if(!arr || !size) {
-        printf("No array");
-        return;
+static const char* t_name = "name";
+static const char* t_data = "data";
+static const char* t_result = "result";
+
+static const char* data_bad = "Wrong test data:";
+
+bool get_test_data(cJSON* test_set, int itemNo, char** name, int** data, int* size, int* result) {
+
+    cJSON* item = cJSON_GetArrayItem(test_set, itemNo);
+    assert(item != NULL);
+
+    if(!get_string(item, itemNo, t_name, name)) {
+        printf("%s item '%s' in test# %d not found or not a string.\n", data_bad, t_name, itemNo);
+        return false;
     }
-    printf("Array=");
-    for(size_t i = 0; i < size; i++)
-        printf("%d ", arr[i]);
+    if(!get_int_array(item, itemNo, t_data, data, size)) {
+        printf("%s item '%s' in test# %d not found or not an int array or empty.\n", data_bad, t_data, itemNo);
+        return false;
+    }
+    if(!get_int(item, itemNo, t_result, result)) {
+        printf("%s item '%s' in test# %d not found or not an int.\n", data_bad, t_result, itemNo);
+        return false;
+    }
+    return true;
 }
