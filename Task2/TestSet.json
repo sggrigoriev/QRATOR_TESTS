@@ -1,0 +1,32 @@
+[
+  {
+    "name":  "Array size < 2",
+    "data":   [1],
+    "result": -1
+  },
+  {
+    "name":  "No local min: all elements are equal",
+    "data":   [1,1,1,1],
+    "result": -1
+  },
+  {
+    "name":  "Local min on left border",
+    "data":   [5,6,7,6],
+    "result": 0
+  },
+  {
+    "name":  "Local min on right border",
+    "data":   [10,8,6,5],
+    "result": 3
+  },
+  {
+    "name":  "No local min: plateu",
+    "data":   [7,6,5,4,4,4,5,6,7],
+    "result": -1
+  },
+  {
+    "name":  "Several local mins - the first one found",
+    "data":   [7,6,5,4,5,4,5,4,5],
+    "result":  3
+  }
+]
