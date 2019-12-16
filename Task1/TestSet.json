@@ -28,5 +28,10 @@
     "name":  "Several local mins - the first one found",
     "data":   [7,6,5,4,5,4,5,4,5],
     "result":  3
+  },
+  {
+    "name":  "Random array",
+    "data":   [66, 92, 22, 37, 83, 45, 22, 14, 68, 77],
+    "result":  0
   }
 ]

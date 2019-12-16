@@ -26,8 +26,10 @@ int main(int argc, char* argv[]) {
         }
         printf("Name: %s\n\t\t\t", test_name);
         print_array(test_array, array_size);
-        printf("Sorted Array");
+
         int ops = n_swaps(test_array, array_size);
+
+        printf("Sorted Array");
         print_array(test_array, array_size);
         printf("Operations = %d\n", ops);
 
