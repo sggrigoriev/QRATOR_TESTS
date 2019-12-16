@@ -25,13 +25,13 @@ size_t n_min(const int *a, size_t size) {
     ret = min-a;
     return ret;
 }
-size_t n_max(const int* a, size_t size) {
+const int* n_max(const int* a, size_t size) {
     const int* max = a;
-    if(size < 2) return a-max;
+    if(size < 2) return max;
     for(size_t i = 1; i < size; i++) {
         if(*max < a[i]) max = a+i;
     }
-    return max-a;
+    return max;
 }
 
 static void swap(int* a, int* b) { //XOR makes 1+ writes into array...
@@ -134,11 +134,13 @@ int n_swaps(int *a, size_t size) {
     size_t ops = 0;
 
     while (sz > 0) {
-        size_t max_idx = n_max(left_border, sz);
+        const int* max_addr = n_max(left_border, sz);
+        size_t max_idx_in_prev_life = max_addr-a;
+        size_t max_idx = max_addr-left_border;
 
         if(max_idx == (sz-1));
         else if(max_idx == 0) left_border++;
-        else if(max_idx > sz/2) {
+        else if(max_idx_in_prev_life > size/2) {
             shift_center(left_border, max_idx, sz-1);
             ops+= (sz-max_idx -1);
         }
@@ -149,7 +151,7 @@ int n_swaps(int *a, size_t size) {
         }
         sz--;
         printf(">"); print_array(a, size);
-//        printf("\t\t\t\t\t\t\t\t"); print_array(left_border, sz);
+        printf("\t\t\t\t\t\t\t\t"); print_array(left_border, sz);
     }
     return ops;
 }
