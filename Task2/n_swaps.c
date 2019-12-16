@@ -25,6 +25,14 @@ size_t n_min(const int *a, size_t size) {
     ret = min-a;
     return ret;
 }
+size_t n_max(const int* a, size_t size) {
+    const int* max = a;
+    if(size < 2) return a-max;
+    for(size_t i = 1; i < size; i++) {
+        if(*max < a[i]) max = a+i;
+    }
+    return max-a;
+}
 
 static void swap(int* a, int* b) { //XOR makes 1+ writes into array...
     int t = *a;
@@ -78,7 +86,7 @@ static size_t calc_distance(size_t i1, size_t i2, size_t len) {
     return (i1>i2)?i1-i2:i2-i1;
 }
 
-int n_swaps(int *a, size_t size) {
+int n_swaps_1(int *a, size_t size) {
     if(!a || size < 3) return -1;
 
     int* arr = calloc(size, sizeof(int));
@@ -116,6 +124,34 @@ int n_swaps(int *a, size_t size) {
 
     free(arr);
     return min_swaps_amt;
+}
+
+int n_swaps(int *a, size_t size) {
+    if(!a || size < 3) return -1;
+
+    size_t sz = size;
+    int* left_border = a;
+    size_t ops = 0;
+
+    while (sz > 0) {
+        size_t max_idx = n_max(left_border, sz);
+
+        if(max_idx == (sz-1));
+        else if(max_idx == 0) left_border++;
+        else if(max_idx > sz/2) {
+            shift_center(left_border, max_idx, sz-1);
+            ops+= (sz-max_idx -1);
+        }
+        else {
+            shift_center(left_border, max_idx, 0);
+            ops += max_idx;
+            left_border++;
+        }
+        sz--;
+        printf(">"); print_array(a, size);
+//        printf("\t\t\t\t\t\t\t\t"); print_array(left_border, sz);
+    }
+    return ops;
 }
 
 
