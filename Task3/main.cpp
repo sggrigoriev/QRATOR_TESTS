@@ -11,7 +11,7 @@ int main(int argc, char* argv[]) {
 
     TestArray ta(argv[1]);
     if(!ta.valid()) return -1;
-    for(size_t i = 4; i < 5/*ta.size()*/; i++) {
+    for(size_t i = 0; i < ta.size(); i++) {
         ta[i].run();
     }
     return 0;
