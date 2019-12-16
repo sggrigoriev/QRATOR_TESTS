@@ -1,1 +1,0 @@
-/usr/bin/cc -g   CMakeFiles/Task2.dir/main.c.o CMakeFiles/Task2.dir/n_swaps.c.o  -o Task2 

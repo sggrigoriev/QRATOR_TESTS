@@ -1,3 +1,0 @@
-/home/gsg/ClionProjects/HomeTasks/Task2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/gsg/ClionProjects/HomeTasks/Task2/cmake-build-debug/CMakeFiles/Task2.dir
-/home/gsg/ClionProjects/HomeTasks/Task2/cmake-build-debug/CMakeFiles/edit_cache.dir
