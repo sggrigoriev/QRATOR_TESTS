@@ -118,11 +118,20 @@ void cj_free(cJSON* cfg) {
 
 void print_array(const int* arr, size_t size) {
     if(!arr || !size) {
-        printf("No array");
+        printf("No array\n");
         return;
     }
     printf("Array=[");
     for(size_t i = 0; i < size; i++)
         printf(" %d", arr[i]);
     printf(" ]\n");
+}
+
+void print_bitmask(unsigned long mask, size_t size) {
+    printf("Rule: ");
+    for(size_t i = 0; i < size; i++) {
+        bool to_print = (mask >> (size-i-1u))&1u;
+        printf("%02zu%c ", i, (to_print)?'R':'L');
+    }
+    printf("\n");
 }

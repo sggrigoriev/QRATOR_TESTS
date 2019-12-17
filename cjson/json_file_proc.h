@@ -32,6 +32,8 @@ void cj_free(cJSON* cfg);
 
 void print_array(const int* arr, size_t size);
 
+void print_bitmask(unsigned long mask, size_t size);
+
 #ifdef __cplusplus
 }
 #endif

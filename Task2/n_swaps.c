@@ -4,6 +4,8 @@
 #include <memory.h>
 #include <assert.h>
 #include <stdio.h>
+#include <math.h>
+#include <limits.h>
 
 #include "json_file_proc.h"
 
@@ -86,6 +88,27 @@ static size_t calc_distance(size_t i1, size_t i2, size_t len) {
     return (i1>i2)?i1-i2:i2-i1;
 }
 
+static int calc_variant(int* a, size_t size, unsigned long rule) {
+    size_t sz = size;
+    int* left_border = a;
+    size_t ops = 0;
+
+    while (sz > 0) {
+        size_t max_idx = n_max(left_border, sz)-left_border;
+        if((rule >> (size-sz))&1u) { //To the right
+            shift_center(left_border, max_idx, sz-1);
+            ops+= (sz-max_idx -1);
+        }
+        else { // To the left
+            shift_center(left_border, max_idx, 0);
+            ops += max_idx;
+            left_border++;
+        }
+        sz--;
+    }
+    return ops;
+}
+
 int n_swaps_1(int *a, size_t size) {
     if(!a || size < 3) return -1;
 
@@ -135,25 +158,41 @@ int n_swaps(int *a, size_t size) {
 
     while (sz > 0) {
         const int* max_addr = n_max(left_border, sz);
-        size_t max_idx_in_prev_life = max_addr-a;
         size_t max_idx = max_addr-left_border;
 
-        if(max_idx == (sz-1));
-        else if(max_idx == 0) left_border++;
-        else if(max_idx_in_prev_life > size/2) {
+        if(max_idx > (sz-max_idx-1)) { //Right shift
             shift_center(left_border, max_idx, sz-1);
             ops+= (sz-max_idx -1);
         }
-        else {
+        else { //Left shift
             shift_center(left_border, max_idx, 0);
             ops += max_idx;
             left_border++;
         }
-        sz--;
-        printf(">"); print_array(a, size);
-        printf("\t\t\t\t\t\t\t\t"); print_array(left_border, sz);
+         sz--;
     }
     return ops;
+}
+
+int n_swaps_full(int* a, size_t size) {
+    if(!a || size < 3) return -1;
+
+    int* arr = calloc(size, sizeof(int));
+    assert(arr);
+
+    unsigned long variant=0;
+    int min_ops = INT_MAX;
+    for(unsigned long i = 0; i < (unsigned long)pow(2,size); i++) {
+        memcpy(arr, a, size*sizeof(int));
+        int ops = calc_variant(arr, size, i);
+        if(ops < min_ops) {
+            min_ops = ops;
+            variant = i;
+        }
+    }
+// Restoring the best variant
+    print_bitmask(variant, size);
+    return calc_variant(a, size, variant);
 }
 
 
