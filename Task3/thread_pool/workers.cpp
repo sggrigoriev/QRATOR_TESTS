@@ -17,7 +17,6 @@ void Workers::runTask(Task& t) throw(TP_exception) {
  * Find all vacant threads,
  * finish'em and pop oup from running queue
  * If mode == CLEAN_ALL -> wait for all tasks finish
- * TODO: direct deletion by index
  */
 void Workers::cleanClearing(clean_t mode) {
     ts_list_t::iterator it=running.begin();
