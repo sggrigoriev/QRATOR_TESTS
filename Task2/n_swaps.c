@@ -149,7 +149,7 @@ int n_swaps_1(int *a, size_t size) {
     return min_swaps_amt;
 }
 
-int n_swaps(int *a, size_t size) {
+int n_swaps_2(int *a, size_t size) {
     if(!a || size < 3) return -1;
 
     size_t sz = size;
@@ -193,6 +193,59 @@ int n_swaps_full(int* a, size_t size) {
 // Restoring the best variant
     print_bitmask(variant, size);
     return calc_variant(a, size, variant);
+}
+
+int n_swaps(int* a, size_t size) {
+    if(!a || size < 3) return -1;
+
+    int min = a[n_min(a, size)];
+
+    int ops = 0;
+    int new_ops;
+    do {
+//Up
+        new_ops = 0;
+        for(size_t i = 0; i < size-1; i++) {
+            if(i+1 > size - i -1) { //Right shift
+                if(a[i] > a[i+1]) {
+                    if(a[i+1] != min) {
+                        swap(a + i, a + i + 1);
+                        new_ops++;
+                    }
+                    else if(i > 0 && a[i-1]<a[i]) {
+                        swap(a + i, a + i + 1);
+                        new_ops++;
+                    }
+                }
+            }
+            else { // Left shift
+                if(a[i] < a[i+1]) {
+                    swap(a+i, a+i+1);
+                    new_ops++;
+                }
+            }
+        }
+        printf("F");print_array(a, size);
+        ops += new_ops;
+//Down
+        if(!new_ops) break;
+        new_ops = 0;
+        for(size_t i = size-1; i > 1; i--) {
+            if (i > size - i - 1) { //Right shift
+                if (a[i] < a[i-1]) {
+                    swap(a + i, a + i - 1);
+                    new_ops++;
+                }
+            }
+            else if (a[i] > a[i-1]) {
+                swap(a + i, a + i - 1);
+                new_ops++;
+            }
+        }
+        ops += new_ops;
+        print_array(a, size);
+    } while(new_ops);
+    return ops;
 }
 
 

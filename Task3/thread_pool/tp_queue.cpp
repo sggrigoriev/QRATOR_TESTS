@@ -45,11 +45,21 @@ bool PrtTpQueue::empty()  {
 Task& PrtTpQueue::get() {
     Task* ret = NULL;
     pthread_mutex_lock(&q_mutex);
-    if(!TpQueue::empty(Task::hi) && !each3rdRule()) {
-        hi_in_a_row++;
-        ret = &TpQueue::get(Task::hi);
+    if(!TpQueue::empty(Task::hi)) {
+        if(hi_in_a_row < 3) {
+            ret = &TpQueue::get(Task::hi);
+            hi_in_a_row++;
+        }
+        else if(!TpQueue::empty(Task::norm)) {
+            hi_in_a_row = 0;
+            ret = &TpQueue::get(Task::norm);
+        }
+        else {
+            ret = &TpQueue::get(Task::hi);
+            hi_in_a_row++;
+        }
     }
-    else if((TpQueue::empty(Task::hi) || each3rdRule()) && !TpQueue::empty(Task::norm)) {
+    else if(!TpQueue::empty(Task::norm)) {
         hi_in_a_row = 0;
         ret = &TpQueue::get(Task::norm);
     }

@@ -20,7 +20,7 @@ class Workers {
 public:
     typedef enum {CLEAN, CLEAN_ALL} clean_t;
     Workers(size_t amt, Sync& _syn): size(amt), syn(_syn){}
-    ~Workers() { if(!running.empty()) cleanClearing(CLEAN_ALL); }
+    ~Workers() {}
 
     void runTask(Task& t) throw(TP_exception);
     void cleanClearing(clean_t mode);

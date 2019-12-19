@@ -30,8 +30,7 @@ private:
 class SlowAnswer: public Task {
 public:
     SlowAnswer(time_t sec_interval, int num, Result& res): delay(sec_interval), result(res), number(num) {}
-    virtual void _do() { sleep(delay); result.add(number); }
-    Result& getResult() const { return result; }
+    virtual void _do() { result.add(number); sleep(delay);  }
 private:
     unsigned int delay;
     int number;

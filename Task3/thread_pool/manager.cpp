@@ -20,6 +20,7 @@ void Manager::_do() {
                 }
                 break;
             case Sync::SYN_TOTAL_STOP:
+                wrk.cleanClearing(Workers::CLEAN_ALL);
             default:
                 return;
         }

@@ -32,23 +32,27 @@
       {"priority": "hi", "workTimeSec": 2},
       {"priority": "lo", "workTimeSec": 1}
     ],
-    "workersAmount" : 1,
-    "delaySecBeforeStop": 7,
+    "workersAmount" : 4,
+    "delaySecBeforeStop": 1,
     "resultSet": [0,1,2,3]
   },
   {
     "name": "Normal task runs after each 3 hi tasks",
-    "expected": "Tasks 0,2,3(hi) run, Task1(norm) run, Task4(hi) run in this order",
+    "expected": "Tasks 0,3,4(hi) run, Task1(norm) run in this order",
     "tasks": [
       {"priority": "hi", "workTimeSec": 1},
-      {"priority": "norm", "workTimeSec": 1},
+      {"priority": "norm", "workTimeSec": 2},
+      {"priority": "norm", "workTimeSec": 2},
+      {"priority": "hi", "workTimeSec": 1},
+      {"priority": "hi", "workTimeSec": 1},
+      {"priority": "hi", "workTimeSec": 1},
       {"priority": "hi", "workTimeSec": 1},
       {"priority": "hi", "workTimeSec": 1},
       {"priority": "hi", "workTimeSec": 1}
     ],
-    "workersAmount" : 2,
-    "delaySecBeforeStop": 3,
-    "result": [0,2,3,1,4]
+    "workersAmount" : 1,
+    "delaySecBeforeStop": 5,
+    "result": [0,3,4,1]
   },
   {
     "name": "Normal task runs if no hi tasks in queue",
@@ -58,7 +62,7 @@
       {"priority": "hi", "workTimeSec": 1},
       {"priority": "norm", "workTimeSec": 1}
     ],
-    "workersAmount" : 2,
+    "workersAmount" : 3,
     "delaySecBeforeStop": 2,
     "result": [0,1,2]
   },
@@ -84,8 +88,8 @@
       {"priority": "hi", "workTimeSec": 1},
       {"priority": "hi", "workTimeSec": 1}
     ],
-    "workersAmount" : 2,
-    "delaySecBeforeStop": 3,
+    "workersAmount" : 1,
+    "delaySecBeforeStop": 5,
     "result": [0,1,2,3,4]
   }
 ]

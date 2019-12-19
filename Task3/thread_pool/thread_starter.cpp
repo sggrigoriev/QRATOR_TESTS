@@ -7,6 +7,7 @@
 
 bool ThreadStarter::run() throw (TP_exception) {
     if(pthread_attr_init(&attr)) throw TP_exception("ThreadStarter::run: pthread_attr_init error. Abort.");
+    if(pthread_attr_setschedpolicy(&attr, SCHED_FIFO)) throw TP_exception("ThreadStarter::run: pthread_attr_setschedpolicy error. Abort.");;
     return (pthread_create(&id, &attr, &ThreadStarter::thread_proc, (void*)this) == 0);
 }
 

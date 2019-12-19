@@ -30,5 +30,5 @@ void ThreadPool::Stop() {
     all_stops = true;
     syn.Notify(Sync::SYN_TOTAL_STOP);
     ts.stop();
-    wrk.cleanClearing(Workers::CLEAN_ALL);
+
 }
