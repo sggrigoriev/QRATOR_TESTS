@@ -51,8 +51,8 @@
       {"priority": "hi", "workTimeSec": 1}
     ],
     "workersAmount" : 1,
-    "delaySecBeforeStop": 5,
-    "result": [0,3,4,1]
+    "delaySecBeforeStop": 10,
+    "result": [0,3,4,1, 5, 6, 7, 2]
   },
   {
     "name": "Normal task runs if no hi tasks in queue",
