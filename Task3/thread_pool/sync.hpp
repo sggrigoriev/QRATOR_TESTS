@@ -1,5 +1,5 @@
 /*
- * Thread Pool events manager
+ * Thread Pool events sync object
  *
  Created by gsg on 10/12/2019.
 */

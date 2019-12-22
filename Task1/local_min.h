@@ -8,7 +8,8 @@
 #include <stdlib.h>
 
 /***
- * Fing the local minimum index in the array.
+ * Task 1 interface
+ * Find the local minimum index in the array.
  *
  * @param array - int arrray to find on
  * @param size  - array size

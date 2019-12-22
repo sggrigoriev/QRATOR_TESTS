@@ -1,5 +1,5 @@
 /*
- * Wrapper for task start
+ * Wrapper for task start. Because of c++98
  *
  Created by gsg on 10/12/2019.
 */

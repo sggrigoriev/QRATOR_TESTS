@@ -1,7 +1,7 @@
 /*
  * ThreadPool's queue
  * Adds new tasks
- * Gets the task accirdingly to the rules
+ * Gets the task accordingly to the rules
  *
  Created by gsg on 10/12/2019.
 */

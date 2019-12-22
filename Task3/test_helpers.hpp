@@ -1,4 +1,6 @@
 /*
+ * Set of helpers for Tasks1,2,3 testing.
+ *
  Created by gsg on 13/12/2019.
 */
 

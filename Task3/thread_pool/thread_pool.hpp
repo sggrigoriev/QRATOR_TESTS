@@ -1,4 +1,6 @@
 /*
+ * Main class with external interfaces
+ *
  Created by gsg on 09/12/2019.
 */
 

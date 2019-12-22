@@ -4,14 +4,24 @@
 
 #include <stdbool.h>
 #include "local_min.h"
-
+/**
+ * Find local min on array's borders
+ * @param array - int array
+ * @param size  - array size
+ * @return      - local min index or -1 if no local min found
+ */
 ssize_t find_on_borders(const int* array, size_t size) {
     if(array[0] < array[1]) return 0;
     if(array[size-1] < array[size-2]) return size-1;
     return -1;
 
 }
-
+/**
+ * Find the local min in array[1], ..., array[size-1] positions
+ * @param array - int array
+ * @param size  - array size
+ * @return      - local min index or -1 if no local min found
+ */
 ssize_t find_in_the_middle(const int* array, size_t size) {
     bool down = true;
     ssize_t i = 0;

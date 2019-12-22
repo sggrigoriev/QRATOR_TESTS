@@ -1,6 +1,6 @@
 /*
  * Thread Pool's dispatcher thread.
- * Waits for noew tasks and/or for vacant workers to pass a task to worker
+ * Waits for new tasks and/or for vacant workers to pass a task to worker
  Created by gsg on 10/12/2019.
 */
 

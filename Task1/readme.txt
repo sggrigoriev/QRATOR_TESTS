@@ -1,33 +1,36 @@
-Дан массив различных целых чисел. Надо найти индекс локального минимума в этом массиве.
-Необходимо реализовать алгоритм с минимальной асимптотической сложностью.
+Task 1
+==============================================================
+To find the local minimum in integer arrray.
+The implementation algorithim should have minimal asymptotic complexity.
 
-Локальный минимум - это такой элемент массива a_i, что a_{i-1} > a_i < a_{i+1}.
-Для начала и конца массива условие локального минимума, соответственно: a0 < a1 и a_n < a_{n-1}.
+The local min definition:
+    It is a_i that a_ {i-1}> a_i <a_ {i + 1}.
+    For the array's borders, the local minimum condition is, respectively: a0 <a1 and a_n <a_ {n-1}.
 
-Решение:
-    Допущение: считаем вероятность равенства соседних элементом событием маловероятным и пренебрегаем такой возможностью.
-    (N существенно меньше диапазона возможных значений a_i)
+Solution:
+    Assumption: we consider the probability of equality of neighboring elements as extremely low and neglect this possibility.
+    (N is significantly smaller than the range of possible values ​​of a_i)
 
-    Тогда вероятность того, что a_i > a{i+1) есть 1/2
-    Получается, что вероятность найти локальный минимум на границах массива 1/2
-    Вероятность a_i >a {i+1} < a_i+1 есть 1/2*1/2 = 1/4
+    Then the probability that a_i> a {i + 1) is 1/2
+    It turns out that the probability of finding a local minimum at the boundaries of the array 1/2
+    The probability a_i> a {i + 1} <a_i + 1 is 1/2 * 1/2 = 1/4
 
-    Т.е. вероятность того, что локальный минимум найдётся на первых 3х элементах очень близка к единице.
-    Алгоритм:
-        1. Ищем локальный минимум на границах массива.
-        2. Ищем локальный минимум, начиная со второго элемента.
+    I.e. the probability that a local minimum is found on the first 3 elements is very close to 1.
 
-    Сложность алгоритма.
-    В худшем случае локальный минимум найдётся в N-1м элементе.
-    Сложность 2(n-1) -> O(n)
-    В среднем локальный минимум должен найтись на одной из границ, т.е.
-    Cложность O(1)
+Algorithm:
+    1. To find the local min at the boundaries of the array.
+    2. If no local min found, then to find the local minimum in a1, .... a{n-1}.
 
-Запуск тестов:
-    Task1 <путь к файлу с тестовыми данными>
+The complexity of the algorithm.
+    In the worst case, a local minimum is found in the N-1m element.
+    Difficulty 2(n-1) -> O (n)
+    On average, the local minimum should be found at one of the boundaries, i.e.
+    Difficulty O (1)
 
-Описание полей TestSet.json:
-    "name" - описание теста, текстовая строка
-    "data" - массив целых чисел, данные на которых ищется локальный минимум
-    "result" - ожидаемый результат теста индекс локального минимума в массиве "data" или -1, если локального минимума нет.
+Running tests:
+    Task1 <path to test data file>
 
+Description of the TestSet.json fields:
+    "name" - test description, text string
+    "data" - an array of integers on which the local minimum is searched
+    "result" - the expected test result is the local minimum index in the "data" array or -1 if there is no local minimum.

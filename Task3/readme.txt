@@ -1,50 +1,53 @@
-Реализовать ThreadPool:
-- при создании указывается один параметр - число воркеров, которые будут выполнять задачи.
-- метод Enqueue имеет два параметра - объект(ссылку на объект), описывающий задачу, которую надо будет выполнить
-(например абстрактного типа с методом .do()) и приоритет(пусть всего будет три приоритета - low, normal, high).
-- метод Stop() - ожидает завершения выполняемых (в данный момент) задач, после чего убивает воркеры и возвращает управление.
+Task 3
+==========================================================================
+To implement ThreadPool:
+- when creating, one parameter is indicated - the number of workers who will perform the tasks.
+- the Enqueue method has two parameters - an object (a reference to an object) that describes the task that will need to be completed
+(for example, an abstract type with the .do () method) and priority (let there be three priorities in all - low, normal, high).
+- Stop () method - waits for the completion of the tasks currently being performed, after which it kills the workers and returns control.
 
-Enqueue добавляет задачи в очередь на выполнение и возвращает true (если до этого не был вызван Stop - в этом случае Enqueue возвращает false).
+Enqueue adds tasks to the execution queue and returns true (if Stop had not been called before - in this case, Enqueue returns false).
 
-Приоритеты обрабатываются следующим образом:
-а) low-задачи не выполняются никогда, пока в очереди есть хотя бы одна задача с другим приоритетом.
-б) на 3 high-задачи выполняется 1 normal-задача.
-Данная логика относится только к выборке задачи из очереди, уже запущенные задачи приоритизировать не требуется.
+Priorities are processed as follows:
+a) low-tasks are never performed while there is at least one task with a different priority in the queue.
+b) for 3 high-tasks, 1 normal-task is performed.
+This logic applies only to the selection of tasks from the queue; already running tasks do not need to be prioritized.
 
-Изменения в постановке задачи:
-    метод '.do()' переименовался в '_do()'
+NB! Using C++11, C++17, Boost is prohibited!
+===========================================================================
 
-Добавления:
-    1. Обработка приоритетов задач происходит в порядке high, normal, low
-    2. Если есть свободные воркеры и в очереди нет задач с приоритетом high, то в работу берутся задачи с приоритетом normal
-    3. ThreadPool может закончить работу с TP_exception в следующих случаях
-        - ошибка при вызове системных функций (pthread_*,...)
-    4. ThreadPool не перехватывает исключения, возникающие при вызове C++ std библиотек
-    5. ThreadPool в отладочной сборке может аварийно завершиться по assert (ошибки реализации)
+Changes in the statement of the Task 3:
+    the '.do ()' method has been renamed to '_do ()'
 
-Описание:
-    Основные классы:
-        ThreadPool - реализует запрошенную в задании логику
-        Manager - отправляет задачи на выполнение. Ожидает поступления новой задачи или освобождения воркера.
-        ThreadPool - очередь ожидающих выполнение задач. Добавляет новые задачи, выдаёт задачи согласно правилам и приоритетам
-        Workers - обслуживает выполяняющиеся задачи.
+Additions:
+    1. Processing priority tasks occurs in the order of high, normal, low
+    2. If there are free workers and there are no tasks with high priority in the queue, then tasks with normal priority are taken into work
+    3. ThreadPool may terminate with TP_exception in the following cases
+        - error when calling system functions (pthread _ *, ...)
+    4. ThreadPool does not catch exceptions that occur when calling C++ std libraries
+    5. ThreadPool in the debug build may crash on assert in case of implementation errors
 
-Запуск тестов:
-    Task3 <путь к файлу с тестовыми данными>
+Description:
+    Main classes:
+        ThreadPool - implements the logic requested in the task
+        Manager - sends tasks for execution. Waits for a new task or release of the worker.
+        ThreadPool - queue of pending tasks. Adds new tasks, issues tasks according to the rules and priorities
+        Workers - Serves outstanding tasks.
 
-Описание полей TestSet.json:
+Running tests:
+    Task3 <path to test data file>
 
-    "name" - описание теста, текстовая строка
-    "expected" - описание ожилаемого результата
-    "tasks" - массив запускаемых задач
-        "priority" - приоритет ("hi"|"norm"|"lo")
-        "workTimeSec" - время работы задачи
-    "workersAmount" - число воркеров
-    "delaySecBeforeStop" - задержка после запуска последней задачи перед вызовом Stop()
-    Ожидаемый результат:
-        "resultSet" - множество отработавших задач
-            или
-        "result" - массив отработавших задач - учитывается последовательность выполнения
-    "stop_after" - вызвать Stop() после запуска задачи с данным порядковым номером
+Description of the TestSet.json fields:
 
-    Если тест заканчивается неудачно, то перед сообщением failed!!! выводится массив или множество номеров отработавших задач.
+    "name" - test description, text string
+    "expected" - description of the expected result
+    "tasks" - an array of started tasks
+        "priority" - priority ("hi" | "norm" | "lo")
+        "workTimeSec" - task run time
+    "workersAmount" - number of workers
+    "delaySecBeforeStop" - delay after starting the last task before calling Stop ()
+    Expected Result:
+        "resultSet" - many completed tasks
+            or
+        "result" - an array of completed tasks - the execution sequence is taken into account
+    "stop_after" - call Stop () after starting the task with the given serial number
