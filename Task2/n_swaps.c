@@ -2,91 +2,63 @@
  Created by gsg on 09/12/2019.
 */
 #include <memory.h>
-#include <stdio.h>
-
-#include "json_file_proc.h"
 
 /**
- * Find the first (from the left) min value in a
+ * Find the first (from the left) max value in a
  * @param a     - pointer to array if integers
  * @param size  - a size
  * @return      - index of min element in a
  */
-size_t n_min(const int *a, size_t size) {
-    size_t ret = 0;
-
-    const int* min = a;
+const int* n_max(const int* a, size_t size) {
+    const int* max = a;
+    if(size < 2) return max;
     for(size_t i = 1; i < size; i++) {
-        if(a[i] < *min) {
-            min = a+i;
-        }
+        if(*max < a[i]) max = a+i;
     }
-    ret = min-a;
-    return ret;
+    return max;
 }
-/**
- * Swap to elements
- * @param a
- * @param b
- */
+
 static void swap(int* a, int* b) { //XOR makes 1+ writes into array...
     int t = *a;
     *a = *b;
     *b = t;
 }
+/**
+ * Shift element in a from old_plc to new_plc
+ * @param a         - integer array
+ * @param old_plc   - element's index
+ * @param new_plc   - place to shift
+ */
+static void shift(int* a, size_t old_plc, size_t new_plc) {
+    if(old_plc > new_plc) for(;old_plc > new_plc; old_plc--) swap(a+old_plc, a+old_plc-1); //to the left
+    else for(;old_plc < new_plc; old_plc++) swap(a+old_plc, a+old_plc+1);    //to the right
+}
 
-int n_swaps(int* a, size_t size) {
+int n_swaps(int *a, size_t size) {
     if(!a || size < 3) return -1;
 
-    int min = a[n_min(a, size)];
+    size_t sz = size;
+    int* left_border = a;
+    size_t ops = 0;
 
-    int ops = 0;
-    int new_ops;
-    do {
-//Up
-        new_ops = 0;
-        for(size_t i = 0; i < size-1; i++) {
-            if(i+1 > size - i -1) { //Right shift
-                if(a[i] > a[i+1]) {
-                    if(a[i+1] != min) {
-                        swap(a + i, a + i + 1);
-                        new_ops++;
-                    }
-                    else if(i > 0 && a[i-1]<a[i]) {
-                        swap(a + i, a + i + 1);
-                        new_ops++;
-                    }
-                }
-            }
-            else { // Left shift
-                if(a[i] < a[i+1]) {
-                    swap(a+i, a+i+1);
-                    new_ops++;
-                }
-            }
+    while (sz > 0) {
+        const int* max_addr = n_max(left_border, sz);
+        size_t max_idx = max_addr-left_border;
+
+        if(max_idx > (sz-max_idx-1)) { //Right shift
+            shift(left_border, max_idx, sz-1);
+            ops+= (sz-max_idx -1);
         }
-        printf("F");print_array(a, size);
-        ops += new_ops;
-//Down
-        if(!new_ops) break;
-        new_ops = 0;
-        for(size_t i = size-1; i > 1; i--) {
-            if (i > size - i - 1) { //Right shift
-                if (a[i] < a[i-1]) {
-                    swap(a + i, a + i - 1);
-                    new_ops++;
-                }
-            }
-            else if (a[i] > a[i-1]) {
-                swap(a + i, a + i - 1);
-                new_ops++;
-            }
+        else { //Left shift
+            shift(left_border, max_idx, 0);
+            ops += max_idx;
+            left_border++;
         }
-        ops += new_ops;
-        print_array(a, size);
-    } while(new_ops);
+         sz--;
+    }
     return ops;
 }
+
 
 
 

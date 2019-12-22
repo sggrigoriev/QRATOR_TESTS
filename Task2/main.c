@@ -15,7 +15,7 @@ int main(int argc, char* argv[]) {
     cJSON* test_set = cj_parse(argv[1]);
     if(!test_set) return -1;
 
-    for(int i = 5; i < 6/*cJSON_GetArraySize(test_set)*/; i++) {
+    for(int i = 0; i < cJSON_GetArraySize(test_set); i++) {
         char* test_name;
         int* test_array;
         int array_size;
