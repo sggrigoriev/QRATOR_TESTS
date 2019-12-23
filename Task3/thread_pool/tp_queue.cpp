@@ -30,16 +30,12 @@ bool TpQueue::empty(Task::priority_t p) const {
     getHi:      !q[Task::hi].empty() && !(3 hi взяли полряд && !q[Task::norm].empty())
  */
 
-bool PrtTpQueue::empty()  {
-    bool no_hi, no_norm, no_lo;
-
+void PrtTpQueue::add(Task* t, Task::priority_t p) {
     pthread_mutex_lock(&q_mutex);
-        no_hi = TpQueue::empty(Task::hi);
-        no_norm = TpQueue::empty(Task::norm);
-        no_lo = TpQueue::empty(Task::lo);
+    TpQueue::add(t, p);
     pthread_mutex_unlock(&q_mutex);
 
-    return no_hi&&no_norm&&no_lo;
+    syn.Notify(Sync::SYN_NEW_TASK);
 }
 
 Task& PrtTpQueue::get() {
@@ -71,9 +67,14 @@ Task& PrtTpQueue::get() {
     return *ret;
 }
 
-/**
- * No protection!
- */
-bool PrtTpQueue::each3rdRule() {
-    return  (hi_in_a_row >= 3) && !TpQueue::empty(Task::norm);
+void PrtTpQueue::stop() {
+    pthread_mutex_lock(&q_mutex);
+
+    for(int i = 0; i < Task::sz; i++) {
+        while(!q->empty())q[i].pop();
+    }
+
+    pthread_mutex_unlock(&q_mutex);
+
 }
+

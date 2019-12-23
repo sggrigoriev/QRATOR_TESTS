@@ -150,6 +150,7 @@ void Test::run() {
         for (size_t i = 0; i < tasks_array.size(); i++) {
             bool ret = tp.Enqueue(sa_arr[i], tasks_array[i].prt);
             if (stop_after == i) {
+                if (delay_before_stop) sleep(delay_before_stop);
                 tp.Stop();
                 stop_called = true;
             }
@@ -158,7 +159,7 @@ void Test::run() {
                 return;
             }
         }
-        if (delay_before_stop) sleep(delay_before_stop);
+        if (delay_before_stop && !stop_called) sleep(delay_before_stop);
         if (!stop_called) tp.Stop();
     }
     catch(TP_exception& e) {

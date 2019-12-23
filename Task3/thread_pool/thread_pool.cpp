@@ -8,12 +8,20 @@
 
 
 ThreadPool::ThreadPool(size_t workers_amount) throw(TP_exception)
-        : wrk(workers_amount, syn), mgr(syn, q, wrk), ts(mgr)  {
+        :all_stops(false), q(syn) {
     assert(workers_amount);
-    all_stops = false;
 
-    if(!ts.run())
-        throw TP_exception("ThreadPool::ThreadPool: Error on Manager() start. Aborted.");
+    while(workers_amount--) {
+        Worker* wrk = new Worker(syn, q);
+        w.push_back(wrk);
+        wrk->run();
+    }
+ }
+
+ ThreadPool::~ThreadPool() {
+     for(std::vector<Worker*>::iterator i = w.begin(); i != w.end(); ++i) {
+         delete (*i);
+     }
 }
 
 bool ThreadPool::Enqueue(Task& t, Task::priority_t p) throw(TP_exception) {
@@ -21,14 +29,14 @@ bool ThreadPool::Enqueue(Task& t, Task::priority_t p) throw(TP_exception) {
     if(all_stops) return all_stops;
 
     q.add(&t,p);
-    syn.Notify(Sync::SYN_NEW_TASK);
 
     return true;
 }
 
 void ThreadPool::Stop() {
     all_stops = true;
-    syn.Notify(Sync::SYN_TOTAL_STOP);
-    ts.stop();
-
+    q.stop();
+    for(std::vector<Worker*>::iterator i = w.begin(); i != w.end(); ++i) {
+        syn.Notify(Sync::SYN_TOTAL_STOP);
+    }
 }

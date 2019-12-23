@@ -4,6 +4,7 @@
 
 #include <cassert>
 #include <cstring>
+#include <iostream>
 #include "sync.hpp"
 
 Sync::Sync() {
@@ -20,7 +21,7 @@ Sync::~Sync() {
 }
 
 void Sync::Notify(sync_event_t e) {
-    assert((e >= SYN_THREAD_STOPS) && (e < SYN_SIZE));
+    assert((e >= SYN_TOTAL_STOP) && (e < SYN_SIZE));
     pthread_mutex_lock(&s_mutex);
         pthread_mutex_lock(&ec_mutex);
             events_counter[e]++;
@@ -44,7 +45,7 @@ Sync::sync_event_t Sync::Wait() {
 Sync::sync_event_t Sync::getEvent() {
     sync_event_t ret;
     pthread_mutex_lock(&ec_mutex);
-    for(int i = SYN_THREAD_STOPS; i < SYN_SIZE; i++) {
+    for(int i = SYN_TOTAL_STOP; i < SYN_SIZE; i++) {
         if(events_counter[i]) {
             ret = static_cast<sync_event_t>(i);
             events_counter[i]--;

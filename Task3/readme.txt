@@ -30,8 +30,7 @@ Additions:
 Description:
     Main classes:
         ThreadPool - implements the logic requested in the task
-        Manager - sends tasks for execution. Waits for a new task or release of the worker.
-        ThreadPool - queue of pending tasks. Adds new tasks, issues tasks according to the rules and priorities
+        PrtTpQueue - queue of pending tasks. Adds new tasks, issues tasks according to the rules and priorities
         Workers - Serves outstanding tasks.
 
 Running tests:

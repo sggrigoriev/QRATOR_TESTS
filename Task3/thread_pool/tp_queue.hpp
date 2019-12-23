@@ -18,6 +18,7 @@
 #include <pthread.h>
 
 #include "task.hpp"
+#include "sync.hpp"
 
 class TpQueue {
 public:
@@ -30,16 +31,16 @@ protected:
 
 class PrtTpQueue: private TpQueue {
 public:
-    PrtTpQueue(): hi_in_a_row(0) {pthread_mutex_init(&q_mutex, NULL);}
-    ~PrtTpQueue() {pthread_mutex_destroy(&q_mutex);}
-    void add(Task* t, Task::priority_t p) {pthread_mutex_lock(&q_mutex); TpQueue::add(t, p); pthread_mutex_unlock(&q_mutex);}
+    PrtTpQueue(Sync& _syn): hi_in_a_row(0), syn(_syn) {pthread_mutex_init(&q_mutex, NULL);}
+    ~PrtTpQueue() { pthread_mutex_destroy(&q_mutex); }
+    void add(Task* t, Task::priority_t p);
     Task& get();
-    bool empty();
+    void stop();
 private:
     int hi_in_a_row;
     pthread_mutex_t q_mutex;
 
-    bool each3rdRule();
+    Sync& syn;
 };
 
 

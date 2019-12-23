@@ -7,12 +7,11 @@
 #ifndef TASK3_SYNC_HPP
 #define TASK3_SYNC_HPP
 
-#include "locked.hpp"
-
+#include "pthread.h"
 
 class Sync {
 public:
-    typedef enum {SYN_THREAD_STOPS, SYN_NEW_TASK, SYN_TOTAL_STOP, SYN_SIZE} sync_event_t;
+    typedef enum {SYN_TOTAL_STOP, SYN_NEW_TASK, SYN_SIZE} sync_event_t;
     Sync();
     ~Sync();
     void Notify(sync_event_t e);
@@ -21,7 +20,7 @@ private:
     int events_counter[SYN_SIZE];
     pthread_cond_t signal;
     pthread_mutex_t s_mutex;
-    pthread_mutex_t ec_mutex; //for events counter TODO events_counter to Locked
+    pthread_mutex_t ec_mutex; //for events counter
 
     sync_event_t getEvent();
 

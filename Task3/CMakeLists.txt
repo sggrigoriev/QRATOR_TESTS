@@ -16,9 +16,8 @@ include_directories(
 add_executable(Task3
         main.cpp
         thread_pool/thread_pool.cpp
-        thread_pool/tp_queue.cpp thread_pool/sync.cpp
-        thread_pool/thread_starter.cpp
-        thread_pool/manager.cpp
+        thread_pool/tp_queue.cpp
+        thread_pool/sync.cpp
         thread_pool/workers.cpp
         ../cjson/json_file_proc.c
         ../cjson/cJSON.c
