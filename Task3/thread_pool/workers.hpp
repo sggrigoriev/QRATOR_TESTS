@@ -28,7 +28,7 @@ private:
     pthread_t id;
     pthread_attr_t attr;
 
-    static void* thread_proc(void* param);
+    static void* thread_proc(void* param) throw(TP_exception);
     void stop();
 };
 

@@ -2,6 +2,7 @@
  Created by gsg on 10/12/2019.
 */
 
+#include <iostream>
 #include "tp_queue.hpp"
 
 void TpQueue::add(Task* t, Task::priority_t p) {
@@ -32,7 +33,14 @@ bool TpQueue::empty(Task::priority_t p) const {
 
 void PrtTpQueue::add(Task* t, Task::priority_t p) {
     pthread_mutex_lock(&q_mutex);
-    TpQueue::add(t, p);
+    try {
+        TpQueue::add(t, p);
+    }
+    catch (...) {
+        std::cerr << "PrtTpQueue::add: System exception. Task is not added.\n";
+        pthread_mutex_unlock(&q_mutex);
+        return;
+    }
     pthread_mutex_unlock(&q_mutex);
 
     syn.NotifyNewTask();
