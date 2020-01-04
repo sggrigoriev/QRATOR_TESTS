@@ -9,21 +9,25 @@
 
 #include "pthread.h"
 
+#define SYNC_TOTAL_STOP false
+#define SYNC_NEW_TASK true
+
 class Sync {
 public:
-    typedef enum {SYN_TOTAL_STOP, SYN_NEW_TASK, SYN_SIZE} sync_event_t;
     Sync();
     ~Sync();
-    void Notify(sync_event_t e);
-    sync_event_t Wait();
+    void NotifyNewTask();
+    void NotifyStop();
+    bool Wait();            //Returns SYNC_TOTAL_STOP or
 private:
-    int events_counter[SYN_SIZE];
-    pthread_cond_t signal;
-    pthread_mutex_t s_mutex;
-    pthread_mutex_t ec_mutex; //for events counter
+    pthread_cond_t t_signal;
+    pthread_mutex_t t_mutex;
 
-    sync_event_t getEvent();
+    bool total_stop;
+    size_t tasks_amount;
+    size_t workers_wait;
 
+    void send_signal();
 };
 
 

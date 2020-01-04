@@ -8,9 +8,9 @@ void TpQueue::add(Task* t, Task::priority_t p) {
     assert((p >= Task::hi) && (p < Task::sz));
     q[p].push(t);
 }
-Task& TpQueue::get(Task::priority_t p) {
+Task* TpQueue::get(Task::priority_t p) {
     assert((p >= Task::hi) && (p < Task::sz) && !q[p].empty());
-    Task& ret = *q[p].front();
+    Task* ret = q[p].front();
     q[p].pop();
     return ret;
 }
@@ -35,46 +35,44 @@ void PrtTpQueue::add(Task* t, Task::priority_t p) {
     TpQueue::add(t, p);
     pthread_mutex_unlock(&q_mutex);
 
-    syn.Notify(Sync::SYN_NEW_TASK);
+    syn.NotifyNewTask();
 }
 
-Task& PrtTpQueue::get() {
+Task* PrtTpQueue::get() {
     Task* ret = NULL;
     pthread_mutex_lock(&q_mutex);
     if(!TpQueue::empty(Task::hi)) {
         if(hi_in_a_row < 3) {
-            ret = &TpQueue::get(Task::hi);
+            ret = TpQueue::get(Task::hi);
             hi_in_a_row++;
         }
         else if(!TpQueue::empty(Task::norm)) {
             hi_in_a_row = 0;
-            ret = &TpQueue::get(Task::norm);
+            ret = TpQueue::get(Task::norm);
         }
         else {
-            ret = &TpQueue::get(Task::hi);
+            ret = TpQueue::get(Task::hi);
             hi_in_a_row++;
         }
     }
     else if(!TpQueue::empty(Task::norm)) {
         hi_in_a_row = 0;
-        ret = &TpQueue::get(Task::norm);
+        ret = TpQueue::get(Task::norm);
     }
     else if(!TpQueue::empty(Task::lo)) {
         hi_in_a_row = 0;
-        ret = &TpQueue::get(Task::lo);
+        ret = TpQueue::get(Task::lo);
     }
     pthread_mutex_unlock(&q_mutex);
-    return *ret;
+    return ret;
 }
 
 void PrtTpQueue::stop() {
     pthread_mutex_lock(&q_mutex);
-
     for(int i = 0; i < Task::sz; i++) {
         while(!q->empty())q[i].pop();
     }
-
     pthread_mutex_unlock(&q_mutex);
-
+    syn.NotifyStop();
 }
 

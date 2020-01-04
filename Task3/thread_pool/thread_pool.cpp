@@ -3,30 +3,39 @@
 */
 #include <cassert>
 #include <zconf.h>
+#include <iostream>
 
 #include "thread_pool.hpp"
 
 
-ThreadPool::ThreadPool(size_t workers_amount) throw(TP_exception)
+ThreadPool::ThreadPool(size_t workers_amount)
         :all_stops(false), q(syn) {
     assert(workers_amount);
+    try {
 
-    while(workers_amount--) {
-        Worker* wrk = new Worker(syn, q);
-        w.push_back(wrk);
-        wrk->run();
+        while (workers_amount--) {
+            Worker *wrk = new Worker(syn, q);
+            wrk->run();
+            w.push_back(wrk);
+        }
+    }
+    catch (TP_exception& e) {
+        std::cerr << e.what();
+        all_stops = true;
     }
  }
 
- ThreadPool::~ThreadPool() {
-     for(std::vector<Worker*>::iterator i = w.begin(); i != w.end(); ++i) {
-         delete (*i);
-     }
+ThreadPool::~ThreadPool() {
+    if(!all_stops) Stop();
+    for(std::vector<Worker*>::iterator i = w.begin(); i != w.end(); ++i) {
+        delete (*i);
+    }
 }
 
-bool ThreadPool::Enqueue(Task& t, Task::priority_t p) throw(TP_exception) {
+bool ThreadPool::Enqueue(Task& t, Task::priority_t p) {
     assert((p >= Task::hi) && (p <= Task::lo));
-    if(all_stops) return all_stops;
+
+    if(all_stops) return false;
 
     q.add(&t,p);
 
@@ -36,7 +45,4 @@ bool ThreadPool::Enqueue(Task& t, Task::priority_t p) throw(TP_exception) {
 void ThreadPool::Stop() {
     all_stops = true;
     q.stop();
-    for(std::vector<Worker*>::iterator i = w.begin(); i != w.end(); ++i) {
-        syn.Notify(Sync::SYN_TOTAL_STOP);
-    }
 }

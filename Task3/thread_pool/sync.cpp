@@ -8,51 +8,61 @@
 #include "sync.hpp"
 
 Sync::Sync() {
-    pthread_mutex_init(&s_mutex, NULL);
-    pthread_cond_init (&signal, NULL);
-
-    pthread_mutex_init(&ec_mutex, NULL);
-    memset(events_counter, 0, sizeof(sync_event_t)*SYN_SIZE);
+    pthread_mutex_init(&t_mutex, NULL);
+    pthread_cond_init (&t_signal, NULL);
+    total_stop = false;
+    tasks_amount = 0;
+    workers_wait = 0;
 }
 Sync::~Sync() {
-    pthread_mutex_destroy(&s_mutex);
-    pthread_cond_destroy(&signal);
-    pthread_mutex_destroy(&ec_mutex);
+    pthread_mutex_destroy(&t_mutex);
+    pthread_cond_destroy(&t_signal);
 }
 
-void Sync::Notify(sync_event_t e) {
-    assert((e >= SYN_TOTAL_STOP) && (e < SYN_SIZE));
-    pthread_mutex_lock(&s_mutex);
-        pthread_mutex_lock(&ec_mutex);
-            events_counter[e]++;
-        pthread_mutex_unlock(&ec_mutex);
-        pthread_cond_signal(&signal);
-    pthread_mutex_unlock(&s_mutex);
+void Sync::NotifyNewTask() {
+    pthread_mutex_lock(&t_mutex);
+    tasks_amount++;
+    send_signal();
+    pthread_mutex_unlock(&t_mutex);
 }
-Sync::sync_event_t Sync::Wait() {
-    sync_event_t event;
+void Sync::NotifyStop() {
+    pthread_mutex_lock(&t_mutex);
+    total_stop = true;
+    send_signal();
+    pthread_mutex_unlock(&t_mutex);
+}
 
-    pthread_mutex_lock(&s_mutex);
-        event = getEvent();
-        while (event == SYN_SIZE) {
-            pthread_cond_wait(&signal, &s_mutex);
-            event = getEvent();
+
+bool Sync::Wait() {
+    bool ret;
+    pthread_mutex_lock(&t_mutex);
+    if(total_stop) {
+        ret = SYNC_TOTAL_STOP;
+    }
+    else if(tasks_amount > 0) {
+        tasks_amount--;
+        ret = SYNC_NEW_TASK;
+    }
+    else {      //!stop && !tasks_amount
+        workers_wait++;
+
+        while(!total_stop && !tasks_amount)
+            pthread_cond_wait(&t_signal, &t_mutex);
+
+        workers_wait--;
+        if(total_stop) {
+            ret = SYNC_TOTAL_STOP;
         }
-    pthread_mutex_unlock(&s_mutex);
-    return event;
-}
-
-Sync::sync_event_t Sync::getEvent() {
-    sync_event_t ret;
-    pthread_mutex_lock(&ec_mutex);
-    for(int i = SYN_TOTAL_STOP; i < SYN_SIZE; i++) {
-        if(events_counter[i]) {
-            ret = static_cast<sync_event_t>(i);
-            events_counter[i]--;
-            pthread_mutex_unlock(&ec_mutex);
-            return ret;
+        else { //tasks_amount > 0
+            tasks_amount--;
+            ret = SYNC_NEW_TASK;
         }
     }
-    pthread_mutex_unlock(&ec_mutex);
-    return SYN_SIZE;
+    pthread_mutex_unlock(&t_mutex);
+    return ret;
+}
+
+void Sync::send_signal() {
+    if(workers_wait > 0)
+        pthread_cond_broadcast(&t_signal);
 }

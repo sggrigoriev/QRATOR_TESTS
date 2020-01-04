@@ -22,9 +22,10 @@
 
 class TpQueue {
 public:
+    virtual ~TpQueue() {}
     virtual void add(Task* t, Task::priority_t p);
-    Task& get(Task::priority_t p);
-    bool empty(Task::priority_t p) const; //For all if p == Task::sz
+    Task* get(Task::priority_t p);
+    bool empty(Task::priority_t p) const;
 protected:
     std::queue<Task*> q[Task::sz];
 };
@@ -32,9 +33,10 @@ protected:
 class PrtTpQueue: private TpQueue {
 public:
     PrtTpQueue(Sync& _syn): hi_in_a_row(0), syn(_syn) {pthread_mutex_init(&q_mutex, NULL);}
-    ~PrtTpQueue() { pthread_mutex_destroy(&q_mutex); }
+    virtual ~PrtTpQueue() { pthread_mutex_destroy(&q_mutex); }
+
     void add(Task* t, Task::priority_t p);
-    Task& get();
+    Task* get();
     void stop();
 private:
     int hi_in_a_row;

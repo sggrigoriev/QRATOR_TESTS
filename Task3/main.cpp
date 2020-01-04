@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdio>
+#include <thread_pool.hpp>
 
 #include "test_helpers.hpp"
 
@@ -14,5 +15,7 @@ int main(int argc, char* argv[]) {
     for(size_t i = 0; i < ta.size(); i++) {
         ta[i].run();
     }
+    ThreadPool* tp = new ThreadPool(100);
+    delete tp;
     return 0;
 }

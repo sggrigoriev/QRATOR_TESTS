@@ -25,16 +25,19 @@ void* Worker::thread_proc(void* param) {
     Worker *starter = static_cast<Worker *>(param);
 
     while(true) {
-        Sync::sync_event_t e = starter->syn.Wait();
+        bool e = starter->syn.Wait();
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wswitch-bool"
         switch (e) {
-            case Sync::SYN_NEW_TASK: {
-                Task &t = starter->q.get();
-                t._do();
+            case SYNC_NEW_TASK: {
+                Task* t = starter->q.get();
+                if(t) t->_do();
             }
                 break;
-            case Sync::SYN_TOTAL_STOP:
+            case SYNC_TOTAL_STOP:
             default:
                 pthread_exit(NULL);
         }
+#pragma GCC diagnostic pop
     }
 }
