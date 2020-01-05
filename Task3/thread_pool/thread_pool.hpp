@@ -7,13 +7,11 @@
 #ifndef TASK3_THREAD_POOL_HPP
 #define TASK3_THREAD_POOL_HPP
 
-#include <cstdlib>
-
-#include "tp_exception.hpp"
-#include "task.hpp"
 #include "tp_queue.hpp"
 #include "sync.hpp"
-#include "workers.hpp"
+#include "task.hpp"
+
+class Worker;
 
 class ThreadPool {
 public:

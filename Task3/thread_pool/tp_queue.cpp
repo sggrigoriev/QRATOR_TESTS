@@ -3,6 +3,8 @@
 */
 
 #include <iostream>
+#include <cassert>
+
 #include "tp_queue.hpp"
 
 void TpQueue::add(Task* t, Task::priority_t p) {

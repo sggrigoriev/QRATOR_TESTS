@@ -143,29 +143,23 @@ void Test::run() {
     for(size_t i = 0; i < tasks_array.size(); i++) {
         sa_arr.push_back(SlowAnswer(tasks_array[i].work_time, i, result));
     }
-    try {
-        ThreadPool tp(workers_amount);
+    ThreadPool tp(workers_amount);
 
-        bool stop_called = false;
-        for (size_t i = 0; i < tasks_array.size(); i++) {
-            bool ret = tp.Enqueue(sa_arr[i], tasks_array[i].prt);
-            if (stop_after == i) {
-                if (delay_before_stop) sleep(delay_before_stop);
-                tp.Stop();
-                stop_called = true;
-            }
-            if (!ret && !stop_called) {
-                std::cout << "Enque() returns unexpected false. !!!Failed!!!\n";
-                return;
-            }
+    bool stop_called = false;
+    for (size_t i = 0; i < tasks_array.size(); i++) {
+        bool ret = tp.Enqueue(sa_arr[i], tasks_array[i].prt);
+        if (stop_after == i) {
+            if (delay_before_stop) sleep(delay_before_stop);
+            tp.Stop();
+            stop_called = true;
         }
-        if (delay_before_stop && !stop_called) sleep(delay_before_stop);
-        if (!stop_called) tp.Stop();
+        if (!ret && !stop_called) {
+            std::cout << "Enque() returns unexpected false. !!!Failed!!!\n";
+            return;
+        }
     }
-    catch(TP_exception& e) {
-        std::cout << e.what();
-        std::cout << "failed\n";
-    }
+    if (delay_before_stop && !stop_called) sleep(delay_before_stop);
+    if (!stop_called) tp.Stop();
     std::cout << "\t\t\t";
     if(is_vector_result) {
         Vector res(result);

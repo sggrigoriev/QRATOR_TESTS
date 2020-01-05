@@ -7,8 +7,6 @@
 #ifndef TASK3_WORKERS_HPP
 #define TASK3_WORKERS_HPP
 
-#include <cstdlib>
-
 #include "tp_exception.hpp"
 #include "sync.hpp"
 #include "tp_queue.hpp"

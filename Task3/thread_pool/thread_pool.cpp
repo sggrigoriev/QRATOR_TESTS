@@ -2,8 +2,10 @@
  Created by gsg on 09/12/2019.
 */
 #include <cassert>
-#include <zconf.h>
 #include <iostream>
+
+#include "tp_exception.hpp"
+#include "workers.hpp"
 
 #include "thread_pool.hpp"
 

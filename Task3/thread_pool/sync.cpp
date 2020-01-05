@@ -2,9 +2,6 @@
  Created by gsg on 10/12/2019.
 */
 
-#include <cassert>
-#include <cstring>
-#include <iostream>
 #include "sync.hpp"
 
 Sync::Sync() {
@@ -14,6 +11,7 @@ Sync::Sync() {
     tasks_amount = 0;
     workers_wait = 0;
 }
+
 Sync::~Sync() {
     pthread_mutex_destroy(&t_mutex);
     pthread_cond_destroy(&t_signal);
@@ -25,13 +23,13 @@ void Sync::NotifyNewTask() {
     send_signal();
     pthread_mutex_unlock(&t_mutex);
 }
+
 void Sync::NotifyStop() {
     pthread_mutex_lock(&t_mutex);
     total_stop = true;
     send_signal();
     pthread_mutex_unlock(&t_mutex);
 }
-
 
 bool Sync::Wait() {
     bool ret;

@@ -2,16 +2,14 @@
  Created by gsg on 10/12/2019.
 */
 
-#include <cassert>
 #include <iostream>
-#include <zconf.h>
+#include <pthread.h>
 
 #include "workers.hpp"
 
 void Worker::run() throw(TP_exception) {
     if (pthread_attr_init(&attr)) throw TP_exception("Worker::run: pthread_attr_init error. Abort.");
-    if (pthread_attr_setschedpolicy(&attr, SCHED_FIFO))
-        throw TP_exception("Worker::run: pthread_attr_setschedpolicy error. Abort.");
+    if (pthread_attr_setschedpolicy(&attr, SCHED_FIFO)) throw TP_exception("Worker::run: pthread_attr_setschedpolicy error. Abort.");
     if (pthread_create(&id, &attr, &Worker::thread_proc, (void *) this)) throw TP_exception("Worker::run: pthread_create error. Abort.");
 }
 

@@ -18,7 +18,7 @@ public:
     ~Sync();
     void NotifyNewTask();
     void NotifyStop();
-    bool Wait();            //Returns SYNC_TOTAL_STOP or
+    bool Wait();            //Returns SYNC_TOTAL_STOP or SYNC_NEW_TASK
 private:
     pthread_cond_t t_signal;
     pthread_mutex_t t_mutex;
@@ -27,7 +27,7 @@ private:
     size_t tasks_amount;
     size_t workers_wait;
 
-    void send_signal();
+    void send_signal();     //NB! not thread protected!
 };
 
 

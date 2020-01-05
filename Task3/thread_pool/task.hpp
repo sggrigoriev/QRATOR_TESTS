@@ -10,7 +10,6 @@
 class Task {
 public:
     typedef enum {hi, norm, lo, sz} priority_t;
-    typedef void(*task_t)();
 
     virtual ~Task() {};
     virtual void _do()=0;

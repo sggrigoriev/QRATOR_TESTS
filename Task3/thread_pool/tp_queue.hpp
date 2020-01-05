@@ -11,10 +11,7 @@
 
 
 #include <cstdlib>
-
 #include <queue>
-#include <vector>
-#include <cassert>
 #include <pthread.h>
 
 #include "task.hpp"
