@@ -45,9 +45,8 @@ void PrtTpQueue::add(Task* t, Task::priority_t p) {
         pthread_mutex_unlock(&q_mutex);
         return;
     }
-    pthread_mutex_unlock(&q_mutex);
-
     syn.NotifyNewTask(amt);
+    pthread_mutex_unlock(&q_mutex);
 }
 
 Task* PrtTpQueue::get() {
