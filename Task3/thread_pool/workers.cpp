@@ -23,7 +23,7 @@ void* Worker::thread_proc(void* param) throw(TP_exception) {
     Worker *starter = static_cast<Worker *>(param);
 
     while (true) {
-        bool e = starter->syn.Wait();
+        bool e = starter->q.Wait();
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wswitch-bool"
         switch (e) {

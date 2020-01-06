@@ -11,11 +11,11 @@
 
 
 ThreadPool::ThreadPool(size_t workers_amount)
-        :all_stops(false), q(syn) {
+        :all_stops(false) {
     assert(workers_amount);
     try {
         while (workers_amount--) {
-            Worker *wrk = new Worker(syn, q);
+            Worker *wrk = new Worker(q);
             wrk->run();
             w.push_back(wrk);
         }

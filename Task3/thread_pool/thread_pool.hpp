@@ -8,7 +8,6 @@
 #define TASK3_THREAD_POOL_HPP
 
 #include "tp_queue.hpp"
-#include "sync.hpp"
 #include "task.hpp"
 
 class Worker;
@@ -22,7 +21,6 @@ public:
 
 private:
     bool all_stops;
-    Sync syn;
     PrtTpQueue q;
 
     std::vector<Worker*> w;

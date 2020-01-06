@@ -15,7 +15,9 @@
 #include <pthread.h>
 
 #include "task.hpp"
-#include "sync.hpp"
+
+#define SYNC_TOTAL_STOP false
+#define SYNC_NEW_TASK true
 
 class TpQueue {
 public:
@@ -23,24 +25,36 @@ public:
     virtual void add(Task* t, Task::priority_t p);
     Task* get(Task::priority_t p);
     bool empty(Task::priority_t p) const;
-    size_t amount() const { return q[Task::lo].size() + q[Task::norm].size() + q[Task::hi].size();}
 protected:
     std::queue<Task*> q[Task::sz];
 };
 
 class PrtTpQueue: private TpQueue {
 public:
-    PrtTpQueue(Sync& _syn): hi_in_a_row(0), syn(_syn) {pthread_mutex_init(&q_mutex, NULL);}
-    virtual ~PrtTpQueue() { pthread_mutex_destroy(&q_mutex); }
+    PrtTpQueue();
+    virtual ~PrtTpQueue();
 
     void add(Task* t, Task::priority_t p);
     Task* get();
     void stop();
+    bool Wait();            //Returns SYNC_TOTAL_STOP or SYNC_NEW_TASK
 private:
     int hi_in_a_row;
     pthread_mutex_t q_mutex;
 
-    Sync& syn;
+    bool queue_empty();
+    void NotifyNewTask();
+    void NotifyStop();
+
+    pthread_cond_t t_signal;
+    pthread_mutex_t t_mutex;
+
+    volatile bool total_stop;
+    volatile size_t workers_wait;
+    volatile int tasks_amt;
+
+    void send_signal();     //NB! not thread protected!
+    void send_all();
 };
 
 

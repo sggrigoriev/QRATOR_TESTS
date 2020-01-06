@@ -8,19 +8,17 @@
 #define TASK3_WORKERS_HPP
 
 #include "tp_exception.hpp"
-#include "sync.hpp"
 #include "tp_queue.hpp"
 
 
 class Worker {
 public:
-    Worker(Sync& _syn,  PrtTpQueue& _q): syn(_syn), q(_q) {}
+    Worker(PrtTpQueue& _q): q(_q) {}
     ~Worker() { stop(); }
 
     void run() throw(TP_exception);
 
 private:
-    Sync& syn;
     PrtTpQueue& q;
 
     pthread_t id;
