@@ -106,14 +106,6 @@ void PrtTpQueue::stop() {
     NotifyStop();
 }
 
-bool PrtTpQueue::queue_empty() {
-    bool ret;
-    pthread_mutex_lock(&q_mutex);
-    ret = empty(Task::lo) && empty(Task::norm) && empty(Task::hi);
-    pthread_mutex_unlock(&q_mutex);
-    return ret;
-}
-
 void PrtTpQueue::NotifyNewTask() {
     pthread_mutex_lock(&t_mutex);
     //amount correction because of possible raice after wait
@@ -142,7 +134,7 @@ bool PrtTpQueue::Wait() {
         pthread_mutex_unlock(&t_mutex);
         return ret;
     }
-      //!stop && !tasks_amount
+    //!stop && !tasks_amount
     workers_wait++;
 
     while(!total_stop && !tasks_amt)
@@ -159,11 +151,6 @@ bool PrtTpQueue::Wait() {
 
     pthread_mutex_unlock(&t_mutex);
     return ret;
-}
-
-void PrtTpQueue::send_signal() {
-    if(workers_wait > 0)
-        pthread_cond_signal(&t_signal);
 }
 
 void PrtTpQueue::send_all() {

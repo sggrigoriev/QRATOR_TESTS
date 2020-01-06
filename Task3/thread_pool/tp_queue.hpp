@@ -42,7 +42,6 @@ private:
     int hi_in_a_row;
     pthread_mutex_t q_mutex;
 
-    bool queue_empty();
     void NotifyNewTask();
     void NotifyStop();
 
@@ -53,7 +52,6 @@ private:
     volatile size_t workers_wait;
     volatile int tasks_amt;
 
-    void send_signal();     //NB! not thread protected!
     void send_all();
 };
 
