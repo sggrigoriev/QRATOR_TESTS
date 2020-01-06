@@ -16,18 +16,19 @@ class Sync {
 public:
     Sync();
     ~Sync();
-    void NotifyNewTask();
+    void NotifyNewTask(size_t amount);
     void NotifyStop();
     bool Wait();            //Returns SYNC_TOTAL_STOP or SYNC_NEW_TASK
 private:
     pthread_cond_t t_signal;
     pthread_mutex_t t_mutex;
 
-    bool total_stop;
-    size_t tasks_amount;
-    size_t workers_wait;
+    volatile bool total_stop;
+    volatile int tasks_amount;
+    volatile size_t workers_wait;
 
     void send_signal();     //NB! not thread protected!
+    void send_all();
 };
 
 

@@ -30,7 +30,7 @@ void* Worker::thread_proc(void* param) throw(TP_exception) {
             case SYNC_NEW_TASK: {
                 Task *t = starter->q.get();
                 try {
-                    if (t) t->_do();
+                    if(t) t->_do();
                 }
                 catch (...) {
                     std::cerr << "User task got exception. Task aborted.\n";

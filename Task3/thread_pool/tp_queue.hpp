@@ -23,6 +23,7 @@ public:
     virtual void add(Task* t, Task::priority_t p);
     Task* get(Task::priority_t p);
     bool empty(Task::priority_t p) const;
+    size_t amount() const { return q[Task::lo].size() + q[Task::norm].size() + q[Task::hi].size();}
 protected:
     std::queue<Task*> q[Task::sz];
 };

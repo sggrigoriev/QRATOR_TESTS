@@ -34,9 +34,11 @@ bool TpQueue::empty(Task::priority_t p) const {
  */
 
 void PrtTpQueue::add(Task* t, Task::priority_t p) {
+    size_t amt=0;
     pthread_mutex_lock(&q_mutex);
     try {
         TpQueue::add(t, p);
+        amt = amount();
     }
     catch (...) {
         std::cerr << "PrtTpQueue::add: System exception. Task is not added.\n";
@@ -45,7 +47,7 @@ void PrtTpQueue::add(Task* t, Task::priority_t p) {
     }
     pthread_mutex_unlock(&q_mutex);
 
-    syn.NotifyNewTask();
+    syn.NotifyNewTask(amt);
 }
 
 Task* PrtTpQueue::get() {

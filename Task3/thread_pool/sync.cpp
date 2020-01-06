@@ -17,9 +17,10 @@ Sync::~Sync() {
     pthread_cond_destroy(&t_signal);
 }
 
-void Sync::NotifyNewTask() {
+void Sync::NotifyNewTask(size_t amount) {
     pthread_mutex_lock(&t_mutex);
-    tasks_amount++;
+    //amount correction because of possible raice after wait
+    tasks_amount = amount;
     send_signal();
     pthread_mutex_unlock(&t_mutex);
 }
@@ -27,7 +28,7 @@ void Sync::NotifyNewTask() {
 void Sync::NotifyStop() {
     pthread_mutex_lock(&t_mutex);
     total_stop = true;
-    send_signal();
+    send_all();
     pthread_mutex_unlock(&t_mutex);
 }
 
@@ -41,26 +42,33 @@ bool Sync::Wait() {
         tasks_amount--;
         ret = SYNC_NEW_TASK;
     }
-    else {      //!stop && !tasks_amount
+    else loop: {      //!stop && !tasks_amount
         workers_wait++;
 
         while(!total_stop && !tasks_amount)
             pthread_cond_wait(&t_signal, &t_mutex);
 
-        workers_wait--;
+// Raice is possible here... No atomic operations, so make the possible damage smaller
+        workers_wait = workers_wait - 1;
         if(total_stop) {
             ret = SYNC_TOTAL_STOP;
         }
-        else { //tasks_amount > 0
-            tasks_amount--;
+        else if(tasks_amount > 0) {
+            tasks_amount = tasks_amount - 1;
             ret = SYNC_NEW_TASK;
         }
+        else goto loop;
     }
     pthread_mutex_unlock(&t_mutex);
     return ret;
 }
 
 void Sync::send_signal() {
+    if(workers_wait > 0)
+        pthread_cond_signal(&t_signal);
+}
+
+void Sync::send_all() {
     if(workers_wait > 0)
         pthread_cond_broadcast(&t_signal);
 }
